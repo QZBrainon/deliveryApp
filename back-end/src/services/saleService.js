@@ -37,7 +37,10 @@ const detailedSale = async (id) => {
     const sale = await Sale.findAll({
         where: { id },
         include: [
-            { model: Product, as: 'products' },
+            { model: Product,
+              as: 'products',
+              attributes: { exclude: ['urlImage'] },
+        },
         ],
     });
     return sale;

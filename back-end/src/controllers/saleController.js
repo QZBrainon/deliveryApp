@@ -9,18 +9,18 @@ const createSale = async (req, res, next) => {
   }
 };
 
-const findSalesByRole = async (req, res, next) => {
+const findSalesById = async (req, res, next) => {
   try {
-    const sales = await saleService.findSalesByRole(req.headers.authorization);
+    const sales = await saleService.findSalesById(req.headers.authorization);
     return res.status(200).json(sales);
   } catch (e) {
     next(e);
   }
 };
 
-const findSaleById = async (req, res, next) => {
+const detailedSale = async (req, res, next) => {
   try {
-    const sale = await saleService.findSaleById(req.params.id);
+    const sale = await saleService.detailedSale(req.params.id);
     return res.status(200).json(sale);
   } catch (e) {
     next(e);
@@ -38,7 +38,7 @@ const updateSaleStatus = async (req, res, next) => {
 
 module.exports = {
   createSale,
-  findSalesByRole,
-  findSaleById,
+  findSalesById,
+  detailedSale,
   updateSaleStatus,
 };

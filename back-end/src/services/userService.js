@@ -17,10 +17,17 @@ const createUser = async ({name, email, password, role = 'customer'}) => {
     if (name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
     const findUser = await findUserByEmail(email,password, name);
     if (findUser) throw new ErrorGenerator(409, 'Conflict');
-    const passwordEncripted = md5(password);
-    const userCreated = await User.create({ name, email, password: passwordEncripted, role });
-    const token = tokenGenerator(userCreated.id, userCreated.name, userCreated.email, userCreated.role);
-    return { name: userCreated.name, email: userCreated.email, role: userCreated. role, token };
+    if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
+    const passwordEncripted = md5(user.password);
+    const userCreated = await User.create(
+        { name: user.name,
+          email: user.email,
+          password: passwordEncripted,
+          role: user.role || 'customer' },
+        );
+    const { id, name, email, role } = userCreated;
+    const token = tokenGenerator(id, name, email, role);
+    return { name, email, role, token };
 };
 
 const getSellers = async () => {

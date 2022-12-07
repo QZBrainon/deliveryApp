@@ -27,8 +27,18 @@ const findSaleById = async (req, res, next) => {
   }
 };
 
+const updateSaleStatus = async (req, res, next) => {
+  try {
+    await saleService.updateSaleStatus(req.params.id, req.body);
+    return res.status(200).json({ message: 'Status da compra alterado com sucesso!' });
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   createSale,
   findSalesByRole,
   findSaleById,
+  updateSaleStatus,
 };

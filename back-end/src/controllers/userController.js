@@ -17,8 +17,18 @@ const getSellers = async (_req, res, next) => {
         next(error);
     }
 };
+
+const getAllUsers = async (_req, res, next) => {
+  try {
+    const allUsers = await userService.getAllUsers()
+    return res.status(200).json(allUsers)
+  } catch (error) {
+    next(error)
+  }
+}
     
 module.exports = {
     createUser,
     getSellers,
+    getAllUsers,
 };

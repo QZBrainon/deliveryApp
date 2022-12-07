@@ -5,26 +5,22 @@ const { loginValidator } = require('../utils/loginValidator');
 const { ErrorGenerator } = require('../utils/ErrorGenerator');
 const { tokenGenerator } = require('../utils/tokenGenerator');
 
-const findUserByEmail = async ({ email, password, name = 'xxxxxx' }) => {
+const findUserByEmail = async (email, password, name = 'xxxxxx') => {
     if (!email || !password) throw new ErrorGenerator(400, 'Required fields are missing');
     loginValidator(email, password);
     const user = await User.findOne({ where: { [Op.or]: [{ email }, { name }] } });
     return user;
 };
 
-const createUser = async (user) => {
-    if (!user.name) throw new ErrorGenerator(400, 'Required fields are missing');
-    const findUser = await findUserByEmail(user);
+const createUser = async ({name, email, password, role = 'customer'}) => {
+    if (!name) throw new ErrorGenerator(400, 'Required fields are missing');
+    if (name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
+    const findUser = await findUserByEmail(email,password, name);
     if (findUser) throw new ErrorGenerator(409, 'Conflict');
-    if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
-    const passwordEncripted = md5(user.password);
-    const userCreated = await User.create(
-        { name: user.name, email: user.email, password: passwordEncripted, role: 'customer' },
-        );
-        const { id, name, email, role } = userCreated;
-        const token = tokenGenerator(id, name, email, role);
-        console.log('>>>>>>>----', name, email, role, token);
-    return { name, email, role, token };
+    const passwordEncripted = md5(password);
+    const userCreated = await User.create({ name, email, password: passwordEncripted, role });
+    const token = tokenGenerator(userCreated.id, userCreated.name, userCreated.email, userCreated.role);
+    return { name: userCreated.name, email: userCreated.email, role: userCreated. role, token };
 };
 
 const getSellers = async () => {
@@ -34,8 +30,14 @@ const getSellers = async () => {
     return sellers;
 };
 
+const getAllUsers = async () => {
+  const allUsers = await User.findAll();
+  return allUsers;
+}
+
 module.exports = {
     findUserByEmail,
     createUser,
     getSellers,
+    getAllUsers,
 };

@@ -12,10 +12,10 @@ const createSaleProduct = async (saleId, products) => {
 
 const createSale = async (sale) => {
     const { 
-      userId, sellerId, totalPrice, deliveryAddress, deliveryNumber, products
+      userId, sellerId, totalPrice, deliveryAddress, deliveryNumber, products,
     } = sale;
     const saleCreated = await Sale.create({ 
-      userId, sellerId, totalPrice, deliveryAddress, deliveryNumber 
+      userId, sellerId, totalPrice, deliveryAddress, deliveryNumber, 
     });
     
     await createSaleProduct(saleCreated.id, products);

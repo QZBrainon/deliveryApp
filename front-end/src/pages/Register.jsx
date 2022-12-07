@@ -15,7 +15,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await httpRequest.post('/register', { name, email, password });
+      const data = await httpRequest.post('/users', { name, email, password });
       console.log(error);
       localStorage.setItem('user', JSON.stringify(data));
       navigate('/customer/products');

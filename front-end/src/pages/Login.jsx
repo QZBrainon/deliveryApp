@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import httpRequest from '../axios/config';
 
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,19 +17,30 @@ function Login() {
     return verifyEmail && verifyPassword;
   };
 
-  const handleSubmmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log('entrou');
-      const data = await httpRequest.post('/login', { email, password });
+      const { data } = await httpRequest.post('/login', { email, password });
       console.log(data);
       localStorage.setItem('user', JSON.stringify(data));
+      if (data.role === 'customer') {
+        navigate('/customer/products');
+      }
       navigate('/customer/products');
     } catch (err) {
       console.log(err.response.data.message);
       if (err) setError('Dados inválidos');
     }
   };
+
+  // const handleNavigate = () => {
+  //   const user = localStorage.getItem('user');
+  //   const { role } = user;
+  //   if (role === 'customer') {
+  //     navigate('/customer/products');
+  //   }
+  // };
+
   useEffect(() => {
     setIsButtonDisabled(!verifyLogin(email, password));
   }, [email, password]);
@@ -38,7 +49,7 @@ function Login() {
     <div className="LoginPage">
       <img src="" alt="logo" className="AppLogo" />
       <h1>Delivery App</h1>
-      <form onSubmit={ handleSubmmit }>
+      <form onSubmit={ handleSubmit }>
         <input
           data-testid="common_login__input-email"
           value={ email }
@@ -58,17 +69,16 @@ function Login() {
         >
           Login
         </button>
-        <button
-          type="submit"
-          data-testid="common_login__button-register"
-          onClick={ () => navigate('/register') }
-        >
-          Ainda não tenho conta
-        </button>
       </form>
+      <button
+        type="button"
+        data-testid="common_login__button-register"
+        onClick={ () => navigate('/register') }
+      >
+        Ainda não tenho conta
+      </button>
+
       {error && <p data-testid="common_login__element-invalid-email">{error}</p>}
     </div>
   );
 }
-
-export default Login;

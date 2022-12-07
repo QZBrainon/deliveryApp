@@ -23,7 +23,7 @@ const createSale = async (sale) => {
     return saleCreated;
 };
 
-const findSalesByRole = async (token) => {
+const findSalesById = async (token) => {
     const data = jwt.verify(token, fs.readFileSync('jwt.evaluation.key'));
     const { data: { id, role } } = data;
     let sales;

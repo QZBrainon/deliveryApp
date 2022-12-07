@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const { Sale, SaleProduct, Product } = require('../database/models');
 
-// const { ErrorGenerator } = require('../utils/ErrorGenerator');
-
 const createSaleProduct = async (saleId, products) => {
     const result = products.map((product) => (
         { saleId, productId: product.id, quantity: product.quantity }
@@ -34,16 +32,17 @@ const findSalesById = async (token) => {
 };
 
 const detailedSale = async (id) => {
-    const sale = await Sale.findAll({
-        where: { id },
-        include: [
-            { model: Product,
-              as: 'products',
-              attributes: { exclude: ['urlImage'] },
-        },
-        ],
-    });
-    return sale;
+  const sale = await Sale.findOne({
+    where: { id },
+    include: [
+      { model: Product,
+        as: 'products',
+        attributes: { exclude: ['urlImage'] },
+        through: { as: 'qtd', attributes: ['quantity'] },
+      },
+    ],
+  });
+  return sale;
 };
 
 module.exports = {

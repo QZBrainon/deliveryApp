@@ -19,7 +19,10 @@ const createUser = async (user) => {
     if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
     const passwordEncripted = md5(user.password);
     const userCreated = await User.create(
-        { name: user.name, email: user.email, password: passwordEncripted, role: 'customer' },
+        { name: user.name,
+          email: user.email,
+          password: passwordEncripted,
+          role: user.role || 'customer' },
         );
         const { id, name, email, role } = userCreated;
         const token = tokenGenerator(id, name, email, role);

@@ -17,8 +17,31 @@ const getSellers = async (_req, res, next) => {
         next(error);
     }
 };
+
+const getAllUsers = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    const allUsers = await userService.getAllUsers(authorization)
+    return res.status(200).json(allUsers)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers
+    const { id } = req.params
+    await userService.deleteUser(authorization, id)
+    return res.status(204).json({message: 'User deleted'})
+  } catch (error) {
+    next(error)
+  }
+}
     
 module.exports = {
     createUser,
     getSellers,
+    getAllUsers,
+    deleteUser,
 };

@@ -14,9 +14,9 @@ const findUserByEmail = async ({ email, password, name = 'xxxxxx' }) => {
 
 const createUser = async (user) => {
     if (!user.name) throw new ErrorGenerator(400, 'Required fields are missing');
+    if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
     const findUser = await findUserByEmail(user);
     if (findUser) throw new ErrorGenerator(409, 'Conflict');
-    if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
     const passwordEncripted = md5(user.password);
     const userCreated = await User.create(
         { name: user.name,

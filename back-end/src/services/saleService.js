@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const { Sale, SaleProduct, Product } = require('../database/models');
+const { ErrorGenerator } = require('../utils/ErrorGenerator');
 
 const createSaleProduct = async (saleId, products) => {
     const result = products.map((product) => (
@@ -45,8 +46,16 @@ const detailedSale = async (id) => {
   return sale;
 };
 
+const updateSaleStatus = async (id, { status }) => {
+  if (status !== 'Em Trânsito' && status !== 'Preparando' && status !== 'Entregue') {
+    throw new ErrorGenerator(401, 'o status deve ser "Em Trânsito", "Preparando" ou "Entregue"');
+  }
+  Sale.update({ status }, { where: { id } });
+};
+
 module.exports = {
     createSale,
     findSalesById,
     detailedSale,
+    updateSaleStatus,
 };

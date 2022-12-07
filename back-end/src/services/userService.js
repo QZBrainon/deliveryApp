@@ -24,9 +24,8 @@ const createUser = async (user) => {
           password: passwordEncripted,
           role: user.role || 'customer' },
         );
-        const { id, name, email, role } = userCreated;
-        const token = tokenGenerator(id, name, email, role);
-        console.log('>>>>>>>----', name, email, role, token);
+    const { id, name, email, role } = userCreated;
+    const token = tokenGenerator(id, name, email, role);
     return { name, email, role, token };
 };
 

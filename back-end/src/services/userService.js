@@ -29,12 +29,13 @@ const userValidation = async (user) => {
   if (!user.name) throw new ErrorGenerator(400, 'Required fields are missing');
   if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
   const findUser = await findUserByEmail(user);
+  console.log(findUser);
   if (findUser) throw new ErrorGenerator(409, 'Conflict');
 };
 
 const createUser = async (user, tokenAdmin) => {
   const isAdmin = adminRoleVerify(tokenAdmin);
-  userValidation(user);
+  await userValidation(user);
   if (user.role && !isAdmin) throw new ErrorGenerator(401, 'Unauthorized');
   const passwordEncripted = md5(user.password);
   const userCreated = await User.create(

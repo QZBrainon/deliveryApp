@@ -7,6 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
 
   const verifyLogin = (loginEmail, loginPassword) => {
@@ -22,24 +23,26 @@ export default function Login() {
     try {
       const { data } = await httpRequest.post('/login', { email, password });
       console.log(data);
+      console.log(role);
       localStorage.setItem('user', JSON.stringify(data));
-      if (data.role === 'customer') {
-        navigate('/customer/products');
-      }
-      navigate('/customer/products');
+      setRole(data.role);
     } catch (err) {
       console.log(err.response.data.message);
       if (err) setError('Dados inválidos');
     }
   };
 
-  // const handleNavigate = () => {
-  //   const user = localStorage.getItem('user');
-  //   const { role } = user;
-  //   if (role === 'customer') {
-  //     navigate('/customer/products');
-  //   }
-  // };
+  useEffect(() => {
+    if (role === 'customer') {
+      navigate('/customer/products');
+    }
+    if (role === 'seller') {
+      navigate('/seller');
+    }
+    if (role === 'administrator') {
+      navigate('/admin');
+    }
+  }, [role]);
 
   useEffect(() => {
     setIsButtonDisabled(!verifyLogin(email, password));
@@ -64,21 +67,24 @@ export default function Login() {
         />
         <button
           data-testid="common_login__button-login"
-          type="submit"
+          type="button"
           disabled={ isButtonDisabled }
+          onClick={ handleSubmit }
         >
           Login
         </button>
+        <button
+          type="button"
+          data-testid="common_login__button-register"
+          onClick={ () => navigate('/register') }
+        >
+          Ainda não tenho conta
+        </button>
       </form>
-      <button
-        type="button"
-        data-testid="common_login__button-register"
-        onClick={ () => navigate('/register') }
-      >
-        Ainda não tenho conta
-      </button>
 
-      {error && <p data-testid="common_login__element-invalid-email">{error}</p>}
+      {
+        error && <p data-testid="common_login__element-invalid-email">{error}</p>
+      }
     </div>
   );
 }

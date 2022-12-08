@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import './App.css';
 import Products from './pages/Products';
-import Pedidos from './pages/Pedidos';
+// import Pedidos from './pages/Pedidos';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route exact path="/login" element={ <Login /> } />
         <Route exact path="/register" element={ <Register /> } />
         <Route exact path="/customer/products" element={ <Products /> } />
-        <Route exact path="/customer/pedidos" element={ <Pedidos /> } />
+        {/* <Route exact path="/customer/orders" element={ <Pedidos /> } /> */}
       </Routes>
     </Provider>
   );

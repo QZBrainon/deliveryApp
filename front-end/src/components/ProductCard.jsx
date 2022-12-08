@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 
-export default function ProductCard({ id, name, price, urlImage }) {
+export default function ProductCard(props) {
+  console.log(props);
+  const { id, name, price, urlImage } = props;
   return (
     <div>
       <p data-testid={ `customer_products__element-card-title-${id}` }>{name}</p>
@@ -28,7 +30,7 @@ export default function ProductCard({ id, name, price, urlImage }) {
 }
 
 ProductCard.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   urlImage: PropTypes.string.isRequired,

@@ -8,16 +8,17 @@ export default function Products() {
 
   const fetchProducts = async () => {
     const { data } = await httpRequest.get('/products');
+    // const products = JSON.parse(productsJSON);
+    console.log(data);
     setFetchedProducts(data);
   };
 
-  const renderProducts = () => fetchedProducts.map((i) => (
-    <ProductCard
-      key={ i.id }
-      name={ i.name }
-      price={ i.price }
-      urlImage={ i.urlImage }
-    />));
+  const renderProducts = () => fetchedProducts.forEach((i) => (<ProductCard
+    id={ i.id }
+    name={ i.name }
+    price={ i.price }
+    urlImage={ i.urlImage }
+  />));
 
   useEffect(() => {
     fetchProducts();
@@ -25,8 +26,8 @@ export default function Products() {
 
   return (
     <div>
-      {/* <Header /> */}
-      {renderProducts()}
+      <Header />
+      {fetchedProducts && renderProducts()}
     </div>
   );
 }

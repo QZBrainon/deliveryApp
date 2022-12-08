@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import httpRequest from '../axios/config';
 
@@ -13,7 +13,8 @@ export default function Products() {
     setFetchedProducts(data);
   };
 
-  const renderProducts = () => fetchedProducts.forEach((i) => (<ProductCard
+  const renderProducts = () => fetchedProducts.map((i) => (<ProductCard
+    key={ i.id }
     id={ i.id }
     name={ i.name }
     price={ i.price }

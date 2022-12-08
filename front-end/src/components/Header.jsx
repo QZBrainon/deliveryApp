@@ -1,10 +1,10 @@
-// import { useNavigate } from 'react-router-dom';
-// import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-// export default function Header() {
-//   const [name, setName] = useState('');
+export default function Header() {
+  const [name, setName] = useState('');
 
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const getName = () => {
     const userJSON = localStorage.getItem('user');

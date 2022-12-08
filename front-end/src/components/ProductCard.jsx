@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function ProductCard(props) {
-  console.log(props);
-  const { id, name, price, urlImage } = props;
+export default function ProductCard({ id, name, price, urlImage }) {
   return (
     <div
       style={ {

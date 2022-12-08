@@ -7,6 +7,8 @@ const { loginValidator } = require('../utils/loginValidator');
 const { ErrorGenerator } = require('../utils/ErrorGenerator');
 const { tokenGenerator } = require('../utils/tokenGenerator');
 
+const secret = fs.readFileSync('jwt.evaluation.key');
+
 const findUserByEmail = async ({ email, password, name = 'xxxxxx' }) => {
     if (!email || !password) throw new ErrorGenerator(400, 'Required fields are missing');
     loginValidator(email, password);
@@ -14,23 +16,38 @@ const findUserByEmail = async ({ email, password, name = 'xxxxxx' }) => {
     return user;
 };
 
-const createUser = async (user) => {
-    if (!user.name) throw new ErrorGenerator(400, 'Required fields are missing');
-    if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
-    const findUser = await findUserByEmail(user);
-    if (findUser) throw new ErrorGenerator(409, 'Conflict');
-    const passwordEncripted = md5(user.password);
-    const userCreated = await User.create(
-        { name: user.name,
-          email: user.email,
-          password: passwordEncripted,
-          role: user.role || 'customer' },
-        );
-    const { id, name, email, role } = userCreated;
-    const token = tokenGenerator(id, name, email, role);
-    return { name, email, role, token };
+const adminRoleVerify = (tokenAdmin) => {
+  if (tokenAdmin) {
+    const data = jwt.verify(tokenAdmin, secret);
+    const { data: { role } } = data;
+    return role === 'administrator';
+  }
+  return false;
 };
 
+const userValidation = async (user) => {
+  if (!user.name) throw new ErrorGenerator(400, 'Required fields are missing');
+  if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
+  const findUser = await findUserByEmail(user);
+  if (findUser) throw new ErrorGenerator(409, 'Conflict');
+};
+
+const createUser = async (user, tokenAdmin) => {
+  const isAdmin = adminRoleVerify(tokenAdmin);
+  userValidation(user);
+  if (user.role && !isAdmin) throw new ErrorGenerator(401, 'Unauthorized');
+  const passwordEncripted = md5(user.password);
+  const userCreated = await User.create(
+    { name: user.name,
+      email: user.email,
+      password: passwordEncripted,
+      role: user.role || 'customer' },
+  );
+  const { id, name, email, role } = userCreated;
+  const token = tokenGenerator(id, name, email, role);
+  return { name, email, role, token };
+};
+  
 const getSellers = async () => {
     const sellers = await User.findAll({
         attributes: { exclude: ['password'] },
@@ -39,7 +56,7 @@ const getSellers = async () => {
 };
 
 const getAllUsers = async (token) => {
-  const data = jwt.verify(token, fs.readFileSync('jwt.evaluation.key'));
+  const data = jwt.verify(token, secret);
   const { data: { role } } = data;
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');
   const allUsers = await User.findAll(
@@ -50,7 +67,7 @@ const getAllUsers = async (token) => {
 };
 
 const deleteUser = async (token, id) => {
-  const data = jwt.verify(token, fs.readFileSync('jwt.evaluation.key'));
+  const data = jwt.verify(token, secret);
   const { data: { role } } = data;
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');
   const deletedUser = await User.destroy({ where: { id } });

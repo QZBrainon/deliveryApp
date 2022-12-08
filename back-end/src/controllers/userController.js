@@ -1,21 +1,22 @@
 const { userService } = require('../services');
 
 const createUser = async (req, res, next) => {
-    try {
-        const result = await userService.createUser(req.body);
-       return res.status(201).json(result);
-    } catch (error) {
-       next(error);
-    }
+  try {
+    const tokenAdmin = req.headers.authorization || false;
+    const result = await userService.createUser(req.body, tokenAdmin);
+    return res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getSellers = async (_req, res, next) => {
-    try {
-        const sellers = await userService.getSellers();
-        return res.status(200).json(sellers);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const sellers = await userService.getSellers();
+    return res.status(200).json(sellers);
+  } catch (error) {
+      next(error);
+  }
 };
 
 const getAllUsers = async (req, res, next) => {

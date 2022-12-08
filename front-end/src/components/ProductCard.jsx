@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 export default function ProductCard({ id, name, price, urlImage }) {
+  const [qty, setQty] = useState(0);
+
   return (
     <div
       style={ {
@@ -29,13 +32,15 @@ export default function ProductCard({ id, name, price, urlImage }) {
         <button
           type="button"
           data-testid={ `customer_products__button-card-add-item-${id}` }
+          onClick={ () => setQty(qty + 1) }
         >
           +
         </button>
-        <p data-testid={ `customer_products__input-card-quantity-${id}` }>0</p>
+        <div data-testid={ `customer_products__input-card-quantity-${id}` }>{qty}</div>
         <button
           type="button"
           data-testid={ `customer_products__button-card-rm-item-${id}` }
+          onClick={ () => (qty > 0 ? setQty(qty - 1) : setQty(0)) }
         >
           -
         </button>

@@ -9,6 +9,7 @@ const { erro } = require('../middlewares/ErrorMid');
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use('/images', express.static('public'));
 
 app.use('/login', loginRouter);
 app.use('/users', userRouter);

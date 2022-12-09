@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+// import context from '../context/context';
 
 export default function ProductCard({ id, name, price, urlImage }) {
   const [qty, setQty] = useState(0);
+  //  const { cartValue, setCartValue } = useContext(context);
+
+  useEffect(() => {
+  }, [qty]);
 
   return (
     <div
@@ -14,7 +19,10 @@ export default function ProductCard({ id, name, price, urlImage }) {
       } }
     >
       <p data-testid={ `customer_products__element-card-title-${id}` }>{name}</p>
-      <p data-testid={ `customer_products__element-card-price-${id}` }>{price}</p>
+      <p data-testid={ `customer_products__element-card-price-${id}` }>
+        {Number(price)
+          .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+      </p>
       <div>
         <img
           data-testid={ `customer_products__img-card-bg-image-${id}` }
@@ -36,11 +44,16 @@ export default function ProductCard({ id, name, price, urlImage }) {
         >
           +
         </button>
-        <div data-testid={ `customer_products__input-card-quantity-${id}` }>{qty}</div>
+        <input
+          type="number"
+          data-testid={ `customer_products__input-card-quantity-${id}` }
+          value={ qty }
+          onChange={ (event) => setQty(event.target.value) }
+        />
         <button
           type="button"
           data-testid={ `customer_products__button-card-rm-item-${id}` }
-          onClick={ () => (qty > 0 ? setQty(qty - 1) : setQty(0)) }
+          onClick={ () => (qty > 0 && setQty(qty - 1)) }
         >
           -
         </button>

@@ -14,6 +14,11 @@ export default function HeaderAdmin() {
     setRole(user.role);
   };
 
+  const logOut = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
   useEffect(() => {
     getNameRole();
   }, []);
@@ -47,7 +52,7 @@ export default function HeaderAdmin() {
       <p data-testid="customer_products__element-navbar-user-full-name">{name}</p>
       <button
         type="button"
-        onClick={ () => navigate('/') }
+        onClick={ logOut }
         data-testid="customer_products__element-navbar-link-logout"
       >
         Sair

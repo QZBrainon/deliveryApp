@@ -5,7 +5,7 @@ import Context from './context';
 function Provider({ children }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [cartValue, setCartValue] = useState(0);
+  const [cartValue, setCartValue] = useState([]);
   const contextValue = useMemo(
     () => ({ email, setEmail, password, setPassword, cartValue, setCartValue }),
     [email, password, cartValue],

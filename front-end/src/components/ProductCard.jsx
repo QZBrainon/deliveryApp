@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-// import context from '../context/context';
+import { useState, useEffect, useContext } from 'react';
+import context from '../context/context';
 
 export default function ProductCard({ id, name, price, urlImage }) {
   const [qty, setQty] = useState(0);
-  //  const { cartValue, setCartValue } = useContext(context);
+  const { cartValue, setCartValue } = useContext(context);
 
   useEffect(() => {
+    setCartValue([qty * price]);
+    console.log(cartValue);
   }, [qty]);
 
   return (

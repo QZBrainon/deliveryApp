@@ -56,11 +56,13 @@ export default function Login() {
         <input
           data-testid="common_login__input-email"
           value={ email }
+          placeholder="email"
           onChange={ (event) => setEmail(event.target.value) }
           type="text"
         />
         <input
           data-testid="common_login__input-password"
+          placeholder="password"
           value={ password }
           onChange={ (event) => setPassword(event.target.value) }
           type="password"

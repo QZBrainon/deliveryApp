@@ -4,11 +4,38 @@ import context from '../context/context';
 
 export default function ProductCard({ id, name, price, urlImage }) {
   const [qty, setQty] = useState(0);
-  const { cartValue, setCartValue } = useContext(context);
+  const { setCartValue } = useContext(context);
+  // const [product, setProduct] = useState({});
+
+  // const handleProduct = () => {
+
+  // }
 
   useEffect(() => {
-    setCartValue([qty * price]);
-    console.log(cartValue);
+    if (qty) {
+      let saveCart = [];
+      const object = {
+        id,
+        name,
+        price,
+        urlImage,
+        qty,
+      };
+      const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+
+      if (cartItems && cartItems.length) {
+        const result = cartItems.find((item) => item.id === id);
+        if (result) {
+          const filteredCartItems = cartItems.filter((item) => item.id !== id);
+          saveCart = [...filteredCartItems];
+        } else {
+          saveCart = [...cartItems];
+        }
+      }
+      saveCart.push(object);
+      localStorage.setItem('cartItems', JSON.stringify(saveCart));
+      setCartValue(saveCart.reduce((acc, item) => ((item.price * item.qty) + acc), 0));
+    }
   }, [qty]);
 
   return (

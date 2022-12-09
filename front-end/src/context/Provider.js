@@ -5,9 +5,10 @@ import Context from './context';
 function Provider({ children }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [cartValue, setCartValue] = useState(0);
   const contextValue = useMemo(
-    () => ({ email, setEmail, password, setPassword }),
-    [email, password],
+    () => ({ email, setEmail, password, setPassword, cartValue, setCartValue }),
+    [email, password, cartValue],
   );
   return (
     <Context.Provider value={ contextValue }>

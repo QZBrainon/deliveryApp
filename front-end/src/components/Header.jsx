@@ -12,6 +12,11 @@ export default function Header() {
     setName(user.name);
   };
 
+  const logOut = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
   useEffect(() => {
     getName();
   }, []);
@@ -34,7 +39,7 @@ export default function Header() {
       <p data-testid="customer_products__element-navbar-user-full-name">{name}</p>
       <button
         type="button"
-        onClick={ () => navigate('/') }
+        onClick={ logOut }
         data-testid="customer_products__element-navbar-link-logout"
       >
         Logout

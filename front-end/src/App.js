@@ -3,10 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Provider from './context/Provider';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import './App.css';
 import Products from './pages/Products';
 import Pedidos from './pages/Pedidos';
 import Manage from './pages/Manage';
+import './App.css';
 
 function App() {
   return (

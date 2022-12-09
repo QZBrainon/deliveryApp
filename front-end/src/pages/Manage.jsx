@@ -52,6 +52,7 @@ export default function Products() {
   return (
     <div>
       <HeaderAdmin />
+      <div>TELA DE CADASTRO DE USUÁRIOS</div>
       {users && renderUsers()}
     </div>
   );

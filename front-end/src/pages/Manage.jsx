@@ -3,16 +3,24 @@ import HeaderAdmin from '../components/HeaderAdmin';
 import httpRequest from '../axios/config';
 
 export default function Products() {
-  const [Users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [token, setToken] = useState([]);
+
+  const getToken = () => {
+    const userJSON = localStorage.getItem('user');
+    const user = JSON.parse(userJSON);
+    setToken(user.token);
+  };
 
   const fetchUsers = async () => {
-    const { data } = await httpRequest.get('/products');
+    const { data } = await httpRequest.get('/users', {
+      headers: { Authorization: token } });
     // const products = JSON.parse(productsJSON);
     console.log(data);
     setUsers(data);
   };
 
-  const renderUsers = () => Users.map((user, index) => (
+  const renderUsers = () => users.map((user, index) => (
     <div key={ index }>
       <div data-testid={ `admin_manage__element-user-table-item-number-${index + 1}` }>
         {index + 1}
@@ -37,13 +45,14 @@ export default function Products() {
   ));
 
   useEffect(() => {
+    getToken();
     fetchUsers();
   }, []);
 
   return (
     <div>
       <HeaderAdmin />
-      {Users && renderUsers()}
+      {users && renderUsers()}
     </div>
   );
 }

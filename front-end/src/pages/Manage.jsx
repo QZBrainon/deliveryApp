@@ -4,16 +4,21 @@ import httpRequest from '../axios/config';
 
 export default function Products() {
   const [users, setUsers] = useState([]);
+  const [token, setToken] = useState([]);
+  const [renderizar, setRenderizar] = useState(false);
 
-  const fetchUsers = async (token) => {
+  const fetchUsers = async (tokenLocStorage) => {
+    // console.log('meu token do estado:', token);
     const { data } = await httpRequest.get('/users', {
-      headers: { authorization: token } });
+      headers: { authorization: tokenLocStorage } });
     setUsers(data);
   };
 
   const getToken = async () => {
     const userJSON = localStorage.getItem('user');
     const user = JSON.parse(userJSON);
+    // console.log('meu token:', user.token);
+    setToken(user.token);
     await fetchUsers(user.token);
   };
 
@@ -36,6 +41,7 @@ export default function Products() {
         onClick={ async () => {
           await httpRequest.delete(`/users/${user.id}`, {
             headers: { authorization: token } });
+          return setRenderizar(!renderizar);
         } }
         data-testid={ `admin_manage__element-user-table-remove-${index + 1}` }
       >
@@ -43,6 +49,10 @@ export default function Products() {
       </button>
     </div>
   ));
+
+  useEffect(() => {
+    getToken();
+  }, [renderizar]);
 
   useEffect(() => {
     getToken();

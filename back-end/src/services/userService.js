@@ -57,20 +57,20 @@ const getSellers = async () => {
 };
 
 const getAllUsers = async (token) => {
-  console.log('token no userService >>>>>>>', token);
   const data = jwt.verify(token, secret);
   const { data: { role } } = data;
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');
   const allUsers = await User.findAll(
     { where: { role: { [Op.ne]: 'administrator' } },
     attributes: { exclude: ['password'] } },
-);
-  return allUsers;
-};
-
-const deleteUser = async (token, id) => {
-  const data = jwt.verify(token, secret);
-  const { data: { role } } = data;
+    );
+    return allUsers;
+  };
+  
+  const deleteUser = async (token, id) => {
+    const data = jwt.verify(token, secret);
+    const { data: { role } } = data;
+    console.log('role no userService >>>>>>>', role);
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');
   const deletedUser = await User.destroy({ where: { id } });
   return deletedUser;

@@ -35,6 +35,7 @@ const deleteUser = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
     const { id } = req.params;
+    console.log('token e id no deleteUser no userController >>>>>', id, '  >>>>  ', authorization);
     await userService.deleteUser(authorization, id);
     return res.status(204).json({ message: 'User deleted' });
   } catch (error) {

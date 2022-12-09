@@ -4,20 +4,17 @@ import httpRequest from '../axios/config';
 
 export default function Products() {
   const [users, setUsers] = useState([]);
-  const [token, setToken] = useState([]);
 
-  const getToken = () => {
-    const userJSON = localStorage.getItem('user');
-    const user = JSON.parse(userJSON);
-    setToken(user.token);
+  const fetchUsers = async (token) => {
+    const { data } = await httpRequest.get('/users', {
+      headers: { authorization: token } });
+    setUsers(data);
   };
 
-  const fetchUsers = async () => {
-    const { data } = await httpRequest.get('/users', {
-      headers: { Authorization: token } });
-    // const products = JSON.parse(productsJSON);
-    console.log(data);
-    setUsers(data);
+  const getToken = async () => {
+    const userJSON = localStorage.getItem('user');
+    const user = JSON.parse(userJSON);
+    await fetchUsers(user.token);
   };
 
   const renderUsers = () => users.map((user, index) => (
@@ -36,17 +33,19 @@ export default function Products() {
       </div>
       <button
         type="button"
-        onClick={ () => {} }
+        onClick={ async () => {
+          await httpRequest.delete(`/users/${user.id}`, {
+            headers: { authorization: token } });
+        } }
         data-testid={ `admin_manage__element-user-table-remove-${index + 1}` }
       >
-        {user.name}
+        Excluir
       </button>
     </div>
   ));
 
   useEffect(() => {
     getToken();
-    fetchUsers();
   }, []);
 
   return (

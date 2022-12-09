@@ -40,7 +40,7 @@ export default function Login() {
       navigate('/seller');
     }
     if (role === 'administrator') {
-      navigate('/admin');
+      navigate('/admin/manage');
     }
   }, [role]);
 

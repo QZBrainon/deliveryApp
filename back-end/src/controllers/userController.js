@@ -21,6 +21,8 @@ const getSellers = async (_req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
+    console.log('token no userController >>>>>>>', req.authorization);
+
     const { authorization } = req.headers;
     const allUsers = await userService.getAllUsers(authorization);
     return res.status(200).json(allUsers);

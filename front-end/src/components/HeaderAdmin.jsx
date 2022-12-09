@@ -16,7 +16,7 @@ export default function HeaderAdmin() {
 
   const logOut = () => {
     localStorage.removeItem('user');
-    navigate('/');
+    return navigate('/');
   };
 
   useEffect(() => {

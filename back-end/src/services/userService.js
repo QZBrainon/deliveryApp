@@ -57,6 +57,7 @@ const getSellers = async () => {
 };
 
 const getAllUsers = async (token) => {
+  console.log('token no userService >>>>>>>', token);
   const data = jwt.verify(token, secret);
   const { data: { role } } = data;
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');

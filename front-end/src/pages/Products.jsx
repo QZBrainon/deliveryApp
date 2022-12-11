@@ -33,13 +33,16 @@ export default function Products() {
       <Header />
       <button
         type="button"
-        data-testid="customer_products__checkout-bottom-value"
+        data-testid="customer_products__button-cart"
         onClick={ () => navigate('/customer/checkout') }
       >
         Ver carrinho:
         {' '}
-        {cartValue
-          .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+        <span data-testid="customer_products__checkout-bottom-value">
+          {cartValue
+            .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+
+        </span>
       </button>
       {fetchedProducts && renderProducts()}
     </div>

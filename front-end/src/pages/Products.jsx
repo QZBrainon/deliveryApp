@@ -12,8 +12,6 @@ export default function Products() {
 
   const fetchProducts = async () => {
     const { data } = await httpRequest.get('/products');
-    // const products = JSON.parse(productsJSON);
-    console.log(data);
     setFetchedProducts(data);
   };
 
@@ -24,18 +22,6 @@ export default function Products() {
     price={ i.price }
     urlImage={ i.urlImage }
   />));
-
-  // const createCart = () => {
-  //   const itemsWithQty = fetchedProducts.map((i) => ({
-  //     key: i.id,
-  //     id: i.id,
-  //     name: i.name,
-  //     price: i.price,
-  //     urlImage: i.urlImage,
-  //     qty: 0,
-  //   }));
-  //   localStorage.setItem('cart', itemsWithQty);
-  // };
 
   useEffect(() => {
     fetchProducts();

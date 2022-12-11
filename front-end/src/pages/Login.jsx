@@ -83,7 +83,7 @@ export default function Login() {
           Ainda não tenho conta
         </button>
       </form>
-
+      <p>zebirita@email.com  $#zebirita#$</p>
       {
         error && <p data-testid="common_login__element-invalid-email">{error}</p>
       }

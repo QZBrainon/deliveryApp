@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import httpRequest from '../axios/config';
@@ -7,6 +8,7 @@ import context from '../context/context';
 export default function Products() {
   const [fetchedProducts, setFetchedProducts] = useState([]);
   const { cartValue } = useContext(context);
+  const navigate = useNavigate();
 
   const fetchProducts = async () => {
     const { data } = await httpRequest.get('/products');
@@ -43,7 +45,11 @@ export default function Products() {
   return (
     <div>
       <Header />
-      <button type="button" data-testid="customer_products__checkout-bottom-value">
+      <button
+        type="button"
+        data-testid="customer_products__checkout-bottom-value"
+        onClick={ () => navigate('/customer/checkout') }
+      >
         Ver carrinho:
         {' '}
         {cartValue

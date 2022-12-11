@@ -43,7 +43,7 @@ export default function Products() {
   return (
     <div>
       <Header />
-      <button type="button">
+      <button type="button" data-testid="customer_products__checkout-bottom-value">
         Ver carrinho:
         {' '}
         {cartValue

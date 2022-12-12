@@ -7,6 +7,7 @@ import context from '../context/context';
 
 export default function Products() {
   const [fetchedProducts, setFetchedProducts] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(true);
   const { cartValue } = useContext(context);
   const navigate = useNavigate();
 
@@ -25,8 +26,12 @@ export default function Products() {
 
   useEffect(() => {
     fetchProducts();
-    localStorage.setItem('cart', JSON.stringify([]));
-  }, []);
+    if (cartValue) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [cartValue]);
 
   return (
     <div>
@@ -35,13 +40,15 @@ export default function Products() {
         type="button"
         data-testid="customer_products__button-cart"
         onClick={ () => navigate('/customer/checkout') }
+        disabled={ isDisabled }
       >
         Ver carrinho:
         {' '}
         <span data-testid="customer_products__checkout-bottom-value">
-          {cartValue
-            .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
-
+          {
+            cartValue
+          && cartValue.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+          }
         </span>
       </button>
       {fetchedProducts && renderProducts()}

@@ -5,11 +5,6 @@ import context from '../context/context';
 export default function ProductCard({ id, name, price, urlImage }) {
   const [qty, setQty] = useState(0);
   const { setCartValue } = useContext(context);
-  // const [product, setProduct] = useState({});
-
-  // const handleProduct = () => {
-
-  // }
 
   useEffect(() => {
     if (qty) {
@@ -82,7 +77,7 @@ export default function ProductCard({ id, name, price, urlImage }) {
         <button
           type="button"
           data-testid={ `customer_products__button-card-rm-item-${id}` }
-          onClick={ () => (qty > 0 && setQty(qty - 1)) }
+          onClick={ () => (qty > 0 ? setQty(qty - 1) : setQty(0)) }
         >
           -
         </button>

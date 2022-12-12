@@ -16,8 +16,9 @@ function Provider({ children }) {
       const cart = JSON.parse(localStorage.getItem('cartItems'));
       const total = cart.reduce((acc, item) => item.price * item.qty + acc, 0);
       setCartValue(total);
+    } else {
+      setCartValue(0);
     }
-    setCartValue(0);
   };
 
   useEffect(() => {

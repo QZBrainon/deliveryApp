@@ -36,6 +36,10 @@ export default function Checkout() {
       deliveryAddress: address,
       deliveryNumber: num,
       products: cartItems.map((item) => ({ id: item.id, quantity: item.qty })),
+    }, {
+      headers: {
+        Authorization: JSON.parse(localStorage.getItem('user')).token,
+      },
     });
     navigate(`/customer/orders/${data.id}`);
   };
@@ -43,6 +47,7 @@ export default function Checkout() {
   useEffect(() => {
     fetchSellersInfo();
     setCartItems(JSON.parse(localStorage.getItem('cartItems')));
+    console.log(JSON.parse(localStorage.getItem('user')).token);
   }, []);
 
   const renderCartItems = cartItems.map((item, index) => (

@@ -6,19 +6,27 @@ import httpRequest from '../axios/config';
 export default function Checkout() {
   const [sellers, setSellers] = useState([]); // state com os nomes dos vendedores vindos do fetch
   const [address, setAddress] = useState('');
-  const [salesPerson, setSalesPerson] = useState(''); // state
+  const [salesPerson, setSalesPerson] = useState(''); // state para guardar o nome do vendedor selecionado
   const [num, setNum] = useState('');
+  const [cartItems, setCartItems] = useState([]);
   const { cartValue } = useContext(context);
-  const cartItems = JSON.parse(localStorage.getItem('cartItems'));
 
   const fetchSellersInfo = async () => {
     const { data } = await httpRequest.get('/users/sellers');
     setSellers(data);
   };
 
+  const deleteItemFromCart = (id) => {
+    if (cartItems) {
+      const result = cartValue.filter((item) => item.id !== id);
+      localStorage.setItem('cartItems', JSON.stringify(result));
+      setCartItems(result);
+    }
+  };
+
   const submitSale = async () => {
     await httpRequest.post('/sales', {
-      userId: 'userId que deve vir na resposta do login ou register', // TO DO: incluir id do user na response do login/register
+      userId: 'userId que deve vir na resposta do login ou register', // TODO: incluir id do user na response do login/register
       sellerId: sellers.id,
       totalPrice: cartValue,
       deliveryAddress: address,
@@ -29,6 +37,7 @@ export default function Checkout() {
 
   useEffect(() => {
     fetchSellersInfo();
+    setCartItems(JSON.parse(localStorage.getItem('cartItems')));
   }, []);
 
   const renderCartItems = cartItems.map((item, index) => (
@@ -56,7 +65,7 @@ export default function Checkout() {
         <td
           data-testid={ `customer_checkout__element-order-table-unit-price-${index}` }
         >
-          {item.price}
+          {(item.price).replace('.', ',')}
 
         </td>
         <td
@@ -68,7 +77,13 @@ export default function Checkout() {
         <td
           data-testid={ `customer_checkout__element-order-table-remove-${index}` }
         >
-          <button type="button">Remover</button>
+          <button
+            type="button"
+            onClick={ () => deleteItemFromCart(item.id) }
+          >
+            Remover
+
+          </button>
 
         </td>
       </tr>
@@ -102,13 +117,12 @@ export default function Checkout() {
         <label htmlFor="salesperson">
           P. Vendedora Responsável
           <select
-            name="salesperson"
+            data-testid="customer_checkout__select-seller"
             id="salesperson"
           >
             {sellers.map((seller) => (
               <option
                 key={ seller.id }
-                data-testid="customer_checkout__select-seller"
                 value={ salesPerson && seller.name }
                 onChange={ ({ target }) => setSalesPerson(target.value) }
               >

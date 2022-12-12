@@ -7,15 +7,16 @@ import httpRequest from '../axios/config';
 export default function Checkout() {
   const [sellers, setSellers] = useState([]); // state com os nomes dos vendedores vindos do fetch
   const [address, setAddress] = useState('');
-  const [salesPerson, setSalesPerson] = useState(''); // state para guardar o nome do vendedor selecionado
+  const [salesPerson, setSalesPerson] = useState(0); // state para guardar o id do vendedor
   const [num, setNum] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const { cartValue, setCartValue } = useContext(context);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const fetchSellersInfo = async () => {
     const { data } = await httpRequest.get('/users/sellers');
     setSellers(data);
+    setSalesPerson(data[0].id);
   };
 
   const deleteItemFromCart = (id) => {
@@ -28,15 +29,15 @@ export default function Checkout() {
   };
 
   const submitSale = async () => {
-    const sale = await httpRequest.post('/sales', {
-      userId: JSON.parse(localStorage.getItem('user').id),
-      sellerId: sellers.id,
-      totalPrice: cartValue,
+    const { data } = await httpRequest.post('/sales', {
+      userId: +(JSON.parse(localStorage.getItem('user')).id),
+      sellerId: salesPerson,
+      totalPrice: +(cartValue),
       deliveryAddress: address,
       deliveryNumber: num,
-      products: cartItems,
+      products: cartItems.map((item) => ({ id: item.id, quantity: item.qty })),
     });
-    navigate(`/customer/orders/${sale.id}`);
+    navigate(`/customer/orders/${data.id}`);
   };
 
   useEffect(() => {
@@ -114,7 +115,7 @@ export default function Checkout() {
       <div data-testid="customer_checkout__element-order-total-price">
         Total: R$
         {' '}
-        {cartValue > 0 ? cartValue?.toFixed(2) : 0.00}
+        {cartValue > 0 ? cartValue?.toFixed(2).replace('.', ',') : 0.00}
       </div>
       <h2>Detalhes e Endereço para Entrega</h2>
       <div>
@@ -127,8 +128,9 @@ export default function Checkout() {
             {sellers.map((seller) => (
               <option
                 key={ seller.id }
-                value={ salesPerson && seller.name }
-                onChange={ ({ target }) => setSalesPerson(target.value) }
+                id={ seller.id }
+                value={ seller.name }
+                onChange={ ({ target }) => setSalesPerson(+(target.id)) }
               >
                 {seller.name}
               </option>
@@ -160,7 +162,7 @@ export default function Checkout() {
         <button
           type="button"
           data-testid="customer_checkout__button-submit-order"
-          onClick={ submitSale }
+          onClick={ () => submitSale() }
         >
           FINALIZAR PEDIDO
 

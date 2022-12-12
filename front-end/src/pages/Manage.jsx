@@ -171,7 +171,7 @@ export default function Products() {
       <div>
         {error
           ? (
-            <p data-testid="admin_manage__element-invalid_register">
+            <p data-testid="admin_manage__element-invalid-register">
               Cadastro Inválido
             </p>)
           : null}

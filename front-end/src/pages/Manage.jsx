@@ -11,7 +11,7 @@ export default function Products() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
-  const [error, serError] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ export default function Products() {
       setRenderizar(!renderizar);
     } catch (err) {
       console.log(err.response.data.message);
-      serError(true);
+      setError(true);
     }
   };
 
@@ -103,7 +103,10 @@ export default function Products() {
             name="name"
             value={ name }
             placeholder="Seu Nome"
-            onChange={ ({ target }) => setName(target.value) }
+            onChange={ ({ target }) => {
+              setName(target.value);
+              setError(false);
+            } }
           />
         </label>
 
@@ -117,7 +120,10 @@ export default function Products() {
             name="email"
             placeholder="seu-email@site.com.br"
             value={ email }
-            onChange={ ({ target }) => setEmail(target.value) }
+            onChange={ ({ target }) => {
+              setEmail(target.value);
+              setError(false);
+            } }
           />
         </label>
 

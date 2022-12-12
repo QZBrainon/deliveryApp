@@ -4,7 +4,8 @@ import Provider from './context/Provider';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Products from './pages/Products';
-import Pedidos from './pages/Pedidos';
+import Orders from './pages/Orders';
+import OrdersDetail from './pages/OrdersDetail';
 import Manage from './pages/Manage';
 import Checkout from './pages/Checkout';
 import './App.css';
@@ -17,7 +18,8 @@ function App() {
         <Route exact path="/login" element={ <Login /> } />
         <Route exact path="/register" element={ <Register /> } />
         <Route exact path="/customer/products" element={ <Products /> } />
-        <Route exact path="/customer/orders" element={ <Pedidos /> } />
+        <Route exact path="/customer/orders" element={ <Orders /> } />
+        <Route exact path="/customer/orders/:id" element={ <OrdersDetail /> } />
         <Route exact path="/customer/checkout" element={ <Checkout /> } />
         <Route exact path="/admin/manage" element={ <Manage /> } />
       </Routes>

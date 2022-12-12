@@ -4,7 +4,7 @@ import OrderCard from '../components/OrderCard';
 import userSales from '../mock/salesMock';
 // import httpRequest from '../axios/config';
 
-function Pedidos() {
+function Orders() {
   // const [orders, setOrders] = useState([]);
 
   // const fetchOrders = async () => {
@@ -42,4 +42,4 @@ function Pedidos() {
   );
 }
 
-export default Pedidos;
+export default Orders;

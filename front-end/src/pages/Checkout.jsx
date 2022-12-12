@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import context from '../context/context';
 import Header from '../components/Header';
 import httpRequest from '../axios/config';
@@ -9,7 +10,8 @@ export default function Checkout() {
   const [salesPerson, setSalesPerson] = useState(''); // state para guardar o nome do vendedor selecionado
   const [num, setNum] = useState('');
   const [cartItems, setCartItems] = useState([]);
-  const { cartValue } = useContext(context);
+  const { cartValue, setCartValue } = useContext(context);
+  const navigate = useNavigate;
 
   const fetchSellersInfo = async () => {
     const { data } = await httpRequest.get('/users/sellers');
@@ -18,21 +20,23 @@ export default function Checkout() {
 
   const deleteItemFromCart = (id) => {
     if (cartItems) {
-      const result = cartValue.filter((item) => item.id !== id);
+      const result = cartItems.filter((item) => item.id !== id);
       localStorage.setItem('cartItems', JSON.stringify(result));
       setCartItems(result);
+      setCartValue(result.reduce((acc, item) => item.price * item.qty + acc, 0));
     }
   };
 
   const submitSale = async () => {
-    await httpRequest.post('/sales', {
-      userId: 'userId que deve vir na resposta do login ou register', // TODO: incluir id do user na response do login/register
+    const sale = await httpRequest.post('/sales', {
+      userId: JSON.parse(localStorage.getItem('user').id),
       sellerId: sellers.id,
       totalPrice: cartValue,
       deliveryAddress: address,
       deliveryNumber: num,
-      products: 'array com formato que deve ser recebido no backend',
+      products: cartItems,
     });
+    navigate(`/customer/orders/${sale.id}`);
   };
 
   useEffect(() => {
@@ -71,7 +75,7 @@ export default function Checkout() {
         <td
           data-testid={ `customer_checkout__element-order-table-sub-total-${index}` }
         >
-          {(item.price * item.qty).toFixed(2)}
+          {(item.price * item.qty).toFixed(2).replace('.', ',')}
 
         </td>
         <td

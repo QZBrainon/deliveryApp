@@ -46,7 +46,7 @@ const createUser = async (user, tokenAdmin) => {
   );
   const { id, name, email, role } = userCreated;
   const token = tokenGenerator(id, name, email, role);
-  return { name, email, role, token };
+  return { id, name, email, role, token };
 };
   
 const getSellers = async () => {

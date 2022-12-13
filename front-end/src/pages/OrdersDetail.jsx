@@ -60,7 +60,7 @@ export default function OrdersDetail() {
             <th>Sub-Total</th>
           </tr>
         </thead>
-        {orderDetails.map((sale, index) => (
+        {orderDetails.products.map((sale, index) => (
           <tbody key={ sale.id }>
             <tr>
               <td>{index + 1}</td>

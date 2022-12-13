@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header'
+import Header from '../components/Header';
 import OrderCard from '../components/OrderCard';
+import httpRequest from '../axios/config';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -10,20 +11,18 @@ function Orders() {
   useEffect(() => {
     const getOrders = async () => {
       const user = localStorage.getItem('user');
-      const { id, role, token } = JSON.parse(user);
-      const fetchOrders = await fetch(`http://localhost:3001/sales/user?id=${id}&role=${role}`, {
-        method: 'GET',
+      const { role, token } = JSON.parse(user);
+      const { data } = await httpRequest.get('/sales', {
         headers: {
           authorization: token,
         },
       });
-      const ordersJson = await fetchOrders.json();
-      setOrders(ordersJson);
+      setOrders(data);
       setRoleState(role);
     };
     getOrders();
   }, []);
-  
+
   return (
     <div>
       <Header />

@@ -41,6 +41,8 @@ export default function Checkout() {
         Authorization: JSON.parse(localStorage.getItem('user')).token,
       },
     });
+    localStorage.removeItem('cartItems');
+    setCartValue(0);
     navigate(`/customer/orders/${data.id}`);
   };
 

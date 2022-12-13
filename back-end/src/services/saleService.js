@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const { Sale, SaleProduct, Product } = require('../database/models');
+const { Op } = require('sequelize');
+const { Sale, SaleProduct, Product, User } = require('../database/models');
 const { ErrorGenerator } = require('../utils/ErrorGenerator');
 
 const createSaleProduct = async (saleId, products) => {
@@ -35,9 +36,30 @@ const findSalesById = async (token) => {
     return sales;
 };
 
-const detailedSale = async (id) => {
+const saleByUserId = async (id, saleId) => {
   const sale = await Sale.findOne({
-    where: { id },
+    where: { [Op.and]: [{ id: saleId }, { userId: id }] },
+    attributes: { exclude: ['UserId'] },
+    include: [
+      { model: User,
+        as: ['seller', 'user'],
+        attributes: ['name'],
+      },
+      { model: Product,
+        as: 'products',
+        attributes: { exclude: ['urlImage'] },
+        through: { as: 'qtd', attributes: ['quantity'] },
+      },
+    ],
+  });
+  if (!sale) throw new ErrorGenerator(409, 'Unauthorized');
+  return sale;
+};
+
+const saleBySellerId = async (id, saleId) => {
+  const sale = await Sale.findOne({
+    where: { [Op.and]: [{ id: saleId }, { sellerId: id }] },
+    attributes: { exclude: ['UserId'] },
     include: [
       { model: Product,
         as: 'products',
@@ -46,7 +68,17 @@ const detailedSale = async (id) => {
       },
     ],
   });
+  if (!sale) throw new ErrorGenerator(409, 'Unauthorized');
   return sale;
+};
+
+const detailedSale = async (saleId, token) => {
+  const data = jwt.verify(token, fs.readFileSync('jwt.evaluation.key'));
+  const { data: { id, role } } = data;
+  if (role === 'customer') {
+    return saleByUserId(id, saleId); 
+  } 
+  return saleBySellerId(id, saleId); 
 };
 
 const updateSaleStatus = async (id, { status }) => {

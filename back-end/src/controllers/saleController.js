@@ -2,6 +2,7 @@ const { saleService } = require('../services');
 
 const createSale = async (req, res, next) => {
   try {
+    console.log('venda no controler >>>>>>>>', req.body);
     const result = await saleService.createSale(req.body);
     return res.status(201).json(result);
   } catch (e) {
@@ -20,7 +21,7 @@ const findSalesById = async (req, res, next) => {
 
 const detailedSale = async (req, res, next) => {
   try {
-    const sale = await saleService.detailedSale(req.params.id);
+    const sale = await saleService.detailedSale(req.params.id, req.headers.authorization);
     return res.status(200).json(sale);
   } catch (e) {
     next(e);

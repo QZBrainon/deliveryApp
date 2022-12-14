@@ -8,7 +8,7 @@ import Orders from './pages/Orders';
 import OrdersDetail from './pages/OrdersDetail';
 import Manage from './pages/Manage';
 import Checkout from './pages/Checkout';
-import SellerOrders from './pages/SellerOrders'
+import SellerOrders from './pages/SellerOrders';
 import './App.css';
 
 function App() {

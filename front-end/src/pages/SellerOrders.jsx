@@ -1,10 +1,8 @@
-import React from "react";
-import HeaderSeller from "../components/HeaderSeller";
+import React from 'react';
+import HeaderSeller from '../components/HeaderSeller';
 
-function SellerOrders(){
-    return(
-        <HeaderSeller />
-    )
+function SellerOrders() {
+  return (<HeaderSeller />);
 }
 
 export default SellerOrders;

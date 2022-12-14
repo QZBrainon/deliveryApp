@@ -33,6 +33,11 @@ export default function Login() {
   };
 
   useEffect(() => {
+    const credentials = JSON.parse(localStorage.getItem('user'))?.role;
+    if (credentials) setRole(credentials);
+  }, []);
+
+  useEffect(() => {
     if (role === 'customer') {
       navigate('/customer/products');
     }

@@ -51,7 +51,7 @@ export default function OrdersDetail() {
             data-testid="customer_order_details__element-order-details-label-order-date
 "
           >
-            {(orderDetails?.saleDate)}
+            {new Date(orderDetails?.saleDate).toLocaleDateString('pt-br')}
 
           </p>
           <p
@@ -107,7 +107,8 @@ export default function OrdersDetail() {
                 data-testid={ `customer_order_details__element-order
               -table-unit-price-${index}` }
               >
-                {(sale.price).replace('.', ',')}
+                {Number(sale.price)
+                  .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
 
               </td>
               <td
@@ -117,7 +118,8 @@ export default function OrdersDetail() {
                 }
               >
                 {
-                  (sale.price * sale.qtd.quantity).toFixed(2).replace('.', ',')
+                  Number((sale.price * sale.qtd.quantity))
+                    .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                 }
 
               </td>
@@ -132,7 +134,8 @@ export default function OrdersDetail() {
         Total:
         {' '}
         {
-          orderDetails?.totalPrice
+          Number(orderDetails?.totalPrice)
+            .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
         }
       </div>
     </>

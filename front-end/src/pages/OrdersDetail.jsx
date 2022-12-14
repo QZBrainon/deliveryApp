@@ -5,11 +5,19 @@ import Header from '../components/Header';
 
 export default function OrdersDetail() {
   const [orderDetails, setOrderDetails] = useState();
+  const [erro, setErro] = useState(false);
   const { id } = useParams();
 
-  // const updateStatus = () => {
-  //   // chama a API na route que atualiza o status para Entregue
-  // };
+  const updateStatus = async () => {
+    // chama a API na route que atualiza o status para Entregue
+    try {
+      const result = await httpRequest.patch(`/sales/${id}`, { status: 'Entregue' });
+      console.log(result);
+      setOrderDetails({ ...orderDetails, status: 'Entregue' });
+    } catch (error) {
+      setErro(true);
+    }
+  };
 
   useEffect(() => {
     const fetchOrderDetails = async (saleId) => {
@@ -64,11 +72,13 @@ export default function OrdersDetail() {
           <button
             type="button"
             data-testid="customer_order_details__button-delivery-check"
-            // onClick={ updateStatus }
+            disabled={ orderDetails?.status === 'Entregue' }
+            onClick={ () => updateStatus() }
           >
             Marcar como entregue
 
           </button>
+          {erro && <p>Erro ao atualizar status</p>}
         </div>
         <thead>
           <tr>

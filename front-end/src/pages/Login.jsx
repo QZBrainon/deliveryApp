@@ -42,7 +42,7 @@ export default function Login() {
       navigate('/customer/products');
     }
     if (role === 'seller') {
-      navigate('/seller');
+      navigate('/seller/orders');
     }
     if (role === 'administrator') {
       navigate('/admin/manage');

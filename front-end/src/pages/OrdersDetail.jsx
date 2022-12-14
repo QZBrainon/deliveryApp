@@ -2,40 +2,48 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import httpRequest from '../axios/config';
 import Header from '../components/Header';
+import HeaderSeller from '../components/HeaderSeller';
 
 export default function OrdersDetail() {
   const [orderDetails, setOrderDetails] = useState();
   const [erro, setErro] = useState(false);
+  const [renderizar, setRenderizar] = useState(false);
   const { id } = useParams();
 
-  const updateStatus = async () => {
-    // chama a API na route que atualiza o status para Entregue
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const updateStatus = async (status) => {
     try {
-      const result = await httpRequest.patch(`/sales/${id}`, { status: 'Entregue' });
+      const result = await httpRequest.patch(`/sales/${id}`, { status });
       console.log(result);
-      setOrderDetails({ ...orderDetails, status: 'Entregue' });
+      setOrderDetails({ ...orderDetails, status });
     } catch (error) {
       setErro(true);
     }
   };
 
+  const fetchOrderDetails = async (saleId) => {
+    const { data } = await httpRequest.get(`/sales/${saleId}`, {
+      headers: {
+        Authorization: user?.token,
+      },
+    });
+    console.log(data);
+    setOrderDetails(data);
+  };
+
   useEffect(() => {
-    const fetchOrderDetails = async (saleId) => {
-      const { data } = await httpRequest.get(`/sales/${saleId}`, {
-        headers: {
-          Authorization: JSON.parse(localStorage.getItem('user')).token,
-        },
-      });
-      console.log(data);
-      setOrderDetails(data);
-    };
     fetchOrderDetails(id);
     console.log('STATE ORDER DETAILS', orderDetails);
   }, []);
 
+  useEffect(() => {
+    fetchOrderDetails(id);
+  }, [renderizar]);
+
   return (
     <>
-      <Header />
+      {user?.role === 'customer' ? <Header /> : <HeaderSeller />}
       <h2>Detalhes do Pedido</h2>
       <div>
         <div
@@ -69,15 +77,45 @@ export default function OrdersDetail() {
             {orderDetails?.status}
 
           </p>
-          <button
-            type="button"
-            data-testid="customer_order_details__button-delivery-check"
-            disabled={ orderDetails?.status === 'Entregue' }
-            onClick={ () => updateStatus() }
-          >
-            Marcar como entregue
-
-          </button>
+          {user?.role === 'customer'
+            ? (
+              <button
+                type="button"
+                data-testid="customer_order_details__button-delivery-check"
+                disabled={ orderDetails?.status === 'Entregue' }
+                onClick={ () => {
+                  updateStatus('Entregue');
+                  setRenderizar(!renderizar);
+                } }
+              >
+                Marcar como entregue
+              </button>)
+            : (
+              <div>
+                <button
+                  type="button"
+                  data-testid="seller_order_details__button-preparing-check"
+                  disabled={ orderDetails?.status === ('Preparando' || 'Entregue') }
+                  onClick={ () => {
+                    updateStatus('Preparando');
+                    setRenderizar(!renderizar);
+                  } }
+                >
+                  PREPARAR PEDIDO
+                </button>
+                <button
+                  type="button"
+                  data-testid="seller_order_details__button-dispatch-check"
+                  disabled={ orderDetails?.status === ('Em Trânsito' || 'Entregue') }
+                  onClick={ () => {
+                    updateStatus('Em Trânsito');
+                    setRenderizar(!renderizar);
+                  } }
+                >
+                  SAIU PARA ENTREGA
+                </button>
+              </div>
+            )}
           {erro && <p>Erro ao atualizar status</p>}
         </div>
         <thead>

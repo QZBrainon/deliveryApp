@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-export default function OrderCard({ id, status, date, price, role }) {
+export default function OrderCard(
+  { id, status, date, price, role, deliveryAddress, deliveryNumber },
+) {
   const navigate = useNavigate();
 
   const rawDate = date.split('T')[0];
   const [year, month, day] = rawDate.split('-');
   const formartedDate = `${day}/${month}/${year}`;
+
+  console.log(deliveryAddress, deliveryNumber);
 
   const handleClick = () => {
     navigate(`/${role}/orders/${id}`);
@@ -36,7 +40,7 @@ export default function OrderCard({ id, status, date, price, role }) {
             `${role}_orders__element-order-date-${id}`
           }
         >
-          { formartedDate}
+          {formartedDate}
 
         </p>
         <p
@@ -44,6 +48,7 @@ export default function OrderCard({ id, status, date, price, role }) {
         >
           { price.replace('.', ',') }
         </p>
+        {role === 'seller' && <div>{`${deliveryAddress}, ${deliveryNumber}`}</div> }
       </div>
     </div>
   );
@@ -55,4 +60,6 @@ OrderCard.propTypes = {
   date: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   role: PropTypes.string.isRequired,
+  deliveryAddress: PropTypes.string.isRequired,
+  deliveryNumber: PropTypes.number.isRequired,
 };

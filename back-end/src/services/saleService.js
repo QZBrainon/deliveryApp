@@ -42,7 +42,7 @@ const saleByUserId = async (id, saleId) => {
     attributes: { exclude: ['UserId'] },
     include: [
       { model: User,
-        as: ['seller', 'user'],
+        as: 'seller',
         attributes: ['name'],
       },
       { model: Product,
@@ -61,6 +61,10 @@ const saleBySellerId = async (id, saleId) => {
     where: { [Op.and]: [{ id: saleId }, { sellerId: id }] },
     attributes: { exclude: ['UserId'] },
     include: [
+      { model: User,
+        as: 'seller',
+        attributes: ['name'],
+      },
       { model: Product,
         as: 'products',
         attributes: { exclude: ['urlImage'] },

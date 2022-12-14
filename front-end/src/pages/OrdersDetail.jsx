@@ -4,21 +4,25 @@ import httpRequest from '../axios/config';
 import Header from '../components/Header';
 
 export default function OrdersDetail() {
-  const [orderDetails, setOrderDetails] = useState({});
+  const [orderDetails, setOrderDetails] = useState();
   const { id } = useParams();
 
-  const updateStatus = () => {
-    // chama a API na route que atualiza o status para Entregue
-  };
+  // const updateStatus = () => {
+  //   // chama a API na route que atualiza o status para Entregue
+  // };
 
   useEffect(() => {
-    const fetctOrderDetails = async (saleId) => {
-      const { data } = await httpRequest.post(`/sales/${saleId}`, {
-        headers: JSON.parse(localStorage.getItem('user')).token,
+    const fetchOrderDetails = async (saleId) => {
+      const { data } = await httpRequest.get(`/sales/${saleId}`, {
+        headers: {
+          Authorization: JSON.parse(localStorage.getItem('user')).token,
+        },
       });
+      console.log(data);
       setOrderDetails(data);
     };
-    fetctOrderDetails(id);
+    fetchOrderDetails(id);
+    console.log('STATE ORDER DETAILS', orderDetails);
   }, []);
 
   return (
@@ -31,21 +35,36 @@ export default function OrdersDetail() {
             justifyContent: 'center',
             alignItems: 'center' } }
         >
-          <p>
+          <p data-testid="customer_order_details__element-order-details-label-order-id">
             Pedido
             {' '}
-            {orderDetails.id}
+            {orderDetails?.id}
           </p>
-          <p>
+          <p
+            data-testid="customer_order_details__element-order-details-label-seller-name"
+          >
             P Vend:
             {' '}
-            {orderDetails.seller}
+            {orderDetails?.seller.name}
           </p>
-          <p>{orderDetails.saleDate}</p>
-          <p>{orderDetails.status}</p>
+          <p
+            data-testid="customer_order_details__element-order-details-label-order-date
+"
+          >
+            {(orderDetails?.saleDate)}
+
+          </p>
+          <p
+            data-testid="customer_order_details__element-order-details-
+            label-delivery-status"
+          >
+            {orderDetails?.status}
+
+          </p>
           <button
             type="button"
-            onClick={ updateStatus }
+            data-testid="customer_order_details__button-delivery-check"
+            // onClick={ updateStatus }
           >
             Marcar como entregue
 
@@ -60,26 +79,60 @@ export default function OrdersDetail() {
             <th>Sub-Total</th>
           </tr>
         </thead>
-        {orderDetails.products.map((sale, index) => (
+        {orderDetails?.products.map((sale, index) => (
           <tbody key={ sale.id }>
             <tr>
-              <td>{index + 1}</td>
-              <td>{sale.description}</td>
-              <td>{sale.qty}</td>
-              <td>{sale.price}</td>
-              <td>{(sale.price * qty)}</td>
+              <td
+                data-testid={ `customer_order_details__element-
+                order-table-item-number-${index}` }
+              >
+                {index + 1}
+
+              </td>
+              <td
+                data-testid={ `customer_order_details__element-order
+                -table-name-${index}` }
+              >
+                {sale.name}
+
+              </td>
+              <td
+                data-testid={ `customer_order_details__element-order
+              -table-quantity-${index}` }
+              >
+                {sale.qtd.quantity}
+
+              </td>
+              <td
+                data-testid={ `customer_order_details__element-order
+              -table-unit-price-${index}` }
+              >
+                {(sale.price).replace('.', ',')}
+
+              </td>
+              <td
+                data-testid={
+                  `customer_order_details__element-order
+                  -table-sub-total-${index}`
+                }
+              >
+                {
+                  (sale.price * sale.qtd.quantity).toFixed(2).replace('.', ',')
+                }
+
+              </td>
             </tr>
           </tbody>
-
         ))}
       </div>
-      <div>
+      <div
+        data-testid="customer_order_details__element
+      -order-total-price"
+      >
         Total:
         {' '}
         {
-          orderDetails.products.reduce((acc, product) => (
-            (product.price * product.qty) + acc
-          ), 0)
+          orderDetails?.totalPrice
         }
       </div>
     </>

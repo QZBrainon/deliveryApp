@@ -51,6 +51,15 @@ export default function OrdersDetail() {
             justifyContent: 'center',
             alignItems: 'center' } }
         >
+          {/* <label
+            data-testid={ `${user?.role}_order_details__element
+          -order-details-label-order-id` }
+          >
+            Pedido
+            {' '}
+            {orderDetails?.id}
+          </label> */}
+
           <p
             data-testid={ `${user?.role}_order_details__element
           -order-details-label-order-id` }

@@ -61,31 +61,31 @@ export default function OrdersDetail() {
           </label> */}
 
           <p
-            data-testid={ `${user?.role}_order_details__element
-          -order-details-label-order-id` }
+            data-testid={ `${user?.role}_order_details__element`
+            + '-order-details-label-order-id' }
           >
             Pedido
             {' '}
             {orderDetails?.id}
           </p>
           <p
-            data-testid={ `${user?.role}_order_details__element
-            -order-details-label-seller-name` }
+            data-testid={ `${user?.role}_order_details__element`
+            + '-order-details-label-seller-name' }
           >
             P Vend:
             {' '}
             {orderDetails?.seller.name}
           </p>
           <p
-            data-testid={ `${user?.role}_order_details__element
-            -order-details-label-order-date` }
+            data-testid={ `${user?.role}_order_details__element`
+            + '-order-details-label-order-date' }
           >
             {new Date(orderDetails?.saleDate).toLocaleDateString('pt-br')}
 
           </p>
           <p
-            data-testid={ `${user?.role}_order_details__element
-            -order-details-label-delivery-status` }
+            data-testid={ `${user?.role}_order_details__element`
+            + '-order-details-label-delivery-status' }
           >
             {orderDetails?.status}
 
@@ -144,29 +144,29 @@ export default function OrdersDetail() {
           <tbody key={ sale.id }>
             <tr>
               <td
-                data-testid={ `${user?.role}_order_details__element-
-                order-table-item-number-${index}` }
+                data-testid={ `${user?.role}_order_details__element-`
+                + `order-table-item-number-${index}` }
               >
                 {index + 1}
 
               </td>
               <td
-                data-testid={ `${user?.role}_order_details__element-order
-                -table-name-${index}` }
+                data-testid={ `${user?.role}_order_details__element-order`
+                + `-table-name-${index}` }
               >
                 {sale.name}
 
               </td>
               <td
-                data-testid={ `${user?.role}_order_details__element-order
-              -table-quantity-${index}` }
+                data-testid={ `${user?.role}_order_details__element-order`
+                + `-table-quantity-${index}` }
               >
                 {sale.qtd.quantity}
 
               </td>
               <td
-                data-testid={ `${user?.role}_order_details__element-order
-              -table-unit-price-${index}` }
+                data-testid={ `${user?.role}_order_details__element-order`
+                + `-table-unit-price-${index}` }
               >
                 {Number(sale.price)
                   .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
@@ -174,8 +174,8 @@ export default function OrdersDetail() {
               </td>
               <td
                 data-testid={
-                  `${user?.role}_order_details__element-order
-                  -table-sub-total-${index}`
+                  `${user?.role}_order_details__element-order`
+                  + `-table-sub-total-${index}`
                 }
               >
                 {
@@ -189,8 +189,8 @@ export default function OrdersDetail() {
         ))}
       </div>
       <div
-        data-testid={ `${user?.role}_order_details__element
-      -order-total-price` }
+        data-testid={ `${user?.role}_order_details__element`
+        + '-order-total-price' }
       >
         Total:
         {' '}

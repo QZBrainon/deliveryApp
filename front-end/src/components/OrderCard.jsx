@@ -1,7 +1,20 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-export default function OrderCard({ id, price, date, status }) {
-  const TIME_MIN = 3;
+export default function OrderCard(
+  { id, status, date, price, role, deliveryAddress, deliveryNumber },
+) {
+  const navigate = useNavigate();
+
+  const rawDate = date.split('T')[0];
+  const [year, month, day] = rawDate.split('-');
+  const formartedDate = `${day}/${month}/${year}`;
+
+  console.log(deliveryAddress, deliveryNumber);
+
+  const handleClick = () => {
+    navigate(`/${role}/orders/${id}`);
+  };
 
   return (
     <div
@@ -12,23 +25,42 @@ export default function OrderCard({ id, price, date, status }) {
         alignItems: 'center',
       } }
     >
-      <h5 data-testid={ `customer_orders__element-order-id-${id}` }>
-        {`Pedidos: ${id.toString().padStart(TIME_MIN, '0')}`}
-      </h5>
-      <h2 data-testid={ `customer_orders__element-delivery-status-${id}` }>{status}</h2>
-      <h3
-        data-testid={ `customer_orders__element-order-date-${id}` }
+      <div
+        className="cardOrders"
+        onClick={ handleClick }
+        onKeyDown={ handleClick }
+        role="button"
+        tabIndex={ 0 }
       >
-        {date}
-      </h3>
-      <div data-testid={ `customer_orders__element-card-price-${id}` }>{price}</div>
+        <span>Pedido </span>
+        <span data-testid={ `${role}_orders__element-order-id-${id}` }>{ id }</span>
+        <p data-testid={ `${role}_orders__element-delivery-status-${id}` }>{ status }</p>
+        <p
+          data-testid={
+            `${role}_orders__element-order-date-${id}`
+          }
+        >
+          {formartedDate}
+
+        </p>
+        <p
+          data-testid={ `${role}_orders__element-card-price-${id}` }
+        >
+          { price.replace('.', ',') }
+        </p>
+        {role === 'seller' && <div>{`${deliveryAddress}, ${deliveryNumber}`}</div> }
+        <div>-------------------------------</div>
+      </div>
     </div>
   );
 }
 
 OrderCard.propTypes = {
   id: PropTypes.number.isRequired,
-  price: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
+  deliveryAddress: PropTypes.string.isRequired,
+  deliveryNumber: PropTypes.number.isRequired,
 };

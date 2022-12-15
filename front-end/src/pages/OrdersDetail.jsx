@@ -71,8 +71,8 @@ export default function OrdersDetail() {
 
           </p>
           <p
-            data-testid="customer_order_details__element-order-details-
-            label-delivery-status"
+            data-testid={ `customer_order_details__element
+            -order-details-label-delivery-status` }
           >
             {orderDetails?.status}
 

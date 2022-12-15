@@ -13,6 +13,8 @@ const findUserByEmail = async ({ email, password, name = 'xxxxxx' }) => {
     if (!email || !password) throw new ErrorGenerator(400, 'Required fields are missing');
     loginValidator(email, password);
     const user = await User.findOne({ where: { [Op.or]: [{ email }, { name }] } });
+    // console.log('service')
+    // console.log(user)
     return user;
 };
 

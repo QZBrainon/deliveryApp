@@ -22,13 +22,10 @@ export default function Login() {
     event.preventDefault();
     try {
       const { data } = await httpRequest.post('/login', { email, password });
-      console.log(data);
-      console.log(role);
       localStorage.setItem('user', JSON.stringify(data));
       setRole(data.role);
     } catch (err) {
-      console.log(err.response.data.message);
-      if (err) setError('Dados inválidos');
+      setError('Dados inválidos');
     }
   };
 

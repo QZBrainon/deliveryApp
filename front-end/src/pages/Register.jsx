@@ -20,7 +20,6 @@ export default function Register() {
       localStorage.setItem('user', JSON.stringify(data));
       navigate('/customer/products');
     } catch (err) {
-      console.log(err.response.data.message);
       serError(true);
     }
   };

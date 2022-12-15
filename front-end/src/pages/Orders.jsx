@@ -7,12 +7,12 @@ import userSales from '../mock/salesMock';
 function Orders() {
   // const [orders, setOrders] = useState([]);
 
-  // const fetchOrders = async () => {
-  //   await httpRequest.get('')
-  //     .then(({ data }) => {
-  //       setOrders(data);
-  //     });
-  // };
+   const fetchOrders = async () => {
+     await httpRequest.get('')
+       .then(({ data }) => {
+         setOrders(data);
+       });
+   };
 
   // const renderOrders = () => fetchOrders.map((i) => (<OrderCard
   //   key={ i.id }
@@ -22,9 +22,9 @@ function Orders() {
   //   price={ i.price }
   // />));
 
-  // useEffect(() => {
-  //   fetchOrders();
-  // }, []);
+   useEffect(() => {
+     fetchOrders();
+   }, []);
 
   return (
     <>

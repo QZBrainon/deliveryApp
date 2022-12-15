@@ -12,8 +12,6 @@ export default function OrdersDetail() {
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  const emTransito = 'Em Trânsito';
-
   const updateStatus = async (status) => {
     try {
       const result = await httpRequest.patch(`/sales/${id}`, { status });
@@ -88,7 +86,7 @@ export default function OrdersDetail() {
               <button
                 type="button"
                 data-testid={ `${user?.role}_order_details__button-delivery-check` }
-                disabled={ orderDetails?.status === 'Entregue' }
+                disabled={ orderDetails?.status !== 'Em Trânsito' }
                 onClick={ () => {
                   updateStatus('Entregue');
                   setRenderizar(!renderizar);
@@ -101,9 +99,7 @@ export default function OrdersDetail() {
                 <button
                   type="button"
                   data-testid={ `${user?.role}_order_details__button-preparing-check` }
-                  disabled={
-                    orderDetails?.status !== 'Pendente'
-                  }
+                  disabled={ orderDetails?.status !== 'Pendente' }
                   onClick={ () => {
                     updateStatus('Preparando');
                     setRenderizar(!renderizar);
@@ -114,9 +110,9 @@ export default function OrdersDetail() {
                 <button
                   type="button"
                   data-testid={ `${user?.role}_order_details__button-dispatch-check` }
-                  disabled={ orderDetails?.status === (emTransito || 'Entregue') }
+                  disabled={ orderDetails?.status !== 'Preparando' }
                   onClick={ () => {
-                    updateStatus(emTransito);
+                    updateStatus('Em Trânsito');
                     setRenderizar(!renderizar);
                   } }
                 >

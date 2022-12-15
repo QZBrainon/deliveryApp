@@ -49,6 +49,7 @@ export default function OrderCard(
           { price.replace('.', ',') }
         </p>
         {role === 'seller' && <div>{`${deliveryAddress}, ${deliveryNumber}`}</div> }
+        <div>-------------------------------</div>
       </div>
     </div>
   );

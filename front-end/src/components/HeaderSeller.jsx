@@ -27,35 +27,37 @@ export default function HeaderSeller() {
     <div>
       {role === 'seller'
         ? (
-          <div
-            data-testid="seller_products__element-navbar-link-orders"
+          <button
+            type="button"
+            onClick={ () => navigate('/seller/orders') }
+            data-testid="customer_products__element-navbar-link-orders"
           >
             Pedidos
-          </div>
+          </button>
         )
         : (
           <div>
             <button
               type="button"
               onClick={ () => navigate('/seller/products') }
-              data-testid="seller_products__element-navbar-link-products"
+              data-testid="customer_products__element-navbar-link-products"
             >
               Produtos
             </button>
             <button
               type="button"
               onClick={ () => navigate('/seller/orders') }
-              data-testid="seller_products__element-navbar-link-orders"
+              data-testid="customer_products__element-navbar-link-orders"
             >
               Meus pedidos
             </button>
           </div>
         )}
-      <p data-testid="seller_products__element-navbar-user-full-name">{name}</p>
+      <p data-testid="customer_products__element-navbar-user-full-name">{name}</p>
       <button
         type="button"
         onClick={ logOut }
-        data-testid="seller_products__element-navbar-link-logout"
+        data-testid="customer_products__element-navbar-link-logout"
       >
         Sair
       </button>

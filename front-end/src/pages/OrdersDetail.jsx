@@ -51,27 +51,31 @@ export default function OrdersDetail() {
             justifyContent: 'center',
             alignItems: 'center' } }
         >
-          <p data-testid="customer_order_details__element-order-details-label-order-id">
+          <p
+            data-testid={ `${user?.role}_order_details__element
+          -order-details-label-order-id` }
+          >
             Pedido
             {' '}
             {orderDetails?.id}
           </p>
           <p
-            data-testid="customer_order_details__element-order-details-label-seller-name"
+            data-testid={ `${user?.role}_order_details__element
+            -order-details-label-seller-name` }
           >
             P Vend:
             {' '}
             {orderDetails?.seller.name}
           </p>
           <p
-            data-testid="customer_order_details__element-order-details-label-order-date
-"
+            data-testid={ `${user?.role}_order_details__element
+            -order-details-label-order-date` }
           >
             {new Date(orderDetails?.saleDate).toLocaleDateString('pt-br')}
 
           </p>
           <p
-            data-testid={ `customer_order_details__element
+            data-testid={ `${user?.role}_order_details__element
             -order-details-label-delivery-status` }
           >
             {orderDetails?.status}
@@ -81,7 +85,7 @@ export default function OrdersDetail() {
             ? (
               <button
                 type="button"
-                data-testid="customer_order_details__button-delivery-check"
+                data-testid={ `${user?.role}_order_details__button-delivery-check` }
                 disabled={ orderDetails?.status === 'Entregue' }
                 onClick={ () => {
                   updateStatus('Entregue');
@@ -94,7 +98,7 @@ export default function OrdersDetail() {
               <div>
                 <button
                   type="button"
-                  data-testid="seller_order_details__button-preparing-check"
+                  data-testid={ `${user?.role}_order_details__button-preparing-check` }
                   disabled={ orderDetails?.status === ('Preparando' || 'Entregue') }
                   onClick={ () => {
                     updateStatus('Preparando');
@@ -105,7 +109,7 @@ export default function OrdersDetail() {
                 </button>
                 <button
                   type="button"
-                  data-testid="seller_order_details__button-dispatch-check"
+                  data-testid={ `${user?.role}_order_details__button-dispatch-check` }
                   disabled={ orderDetails?.status === ('Em Trânsito' || 'Entregue') }
                   onClick={ () => {
                     updateStatus('Em Trânsito');
@@ -131,28 +135,28 @@ export default function OrdersDetail() {
           <tbody key={ sale.id }>
             <tr>
               <td
-                data-testid={ `customer_order_details__element-
+                data-testid={ `${user?.role}_order_details__element-
                 order-table-item-number-${index}` }
               >
                 {index + 1}
 
               </td>
               <td
-                data-testid={ `customer_order_details__element-order
+                data-testid={ `${user?.role}_order_details__element-order
                 -table-name-${index}` }
               >
                 {sale.name}
 
               </td>
               <td
-                data-testid={ `customer_order_details__element-order
+                data-testid={ `${user?.role}_order_details__element-order
               -table-quantity-${index}` }
               >
                 {sale.qtd.quantity}
 
               </td>
               <td
-                data-testid={ `customer_order_details__element-order
+                data-testid={ `${user?.role}_order_details__element-order
               -table-unit-price-${index}` }
               >
                 {Number(sale.price)
@@ -161,7 +165,7 @@ export default function OrdersDetail() {
               </td>
               <td
                 data-testid={
-                  `customer_order_details__element-order
+                  `${user?.role}_order_details__element-order
                   -table-sub-total-${index}`
                 }
               >
@@ -176,8 +180,8 @@ export default function OrdersDetail() {
         ))}
       </div>
       <div
-        data-testid="customer_order_details__element
-      -order-total-price"
+        data-testid={ `${user?.role}_order_details__element
+      -order-total-price` }
       >
         Total:
         {' '}

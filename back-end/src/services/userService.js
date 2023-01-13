@@ -31,7 +31,7 @@ const userValidation = async (user) => {
   if (!user.name) throw new ErrorGenerator(400, 'Required fields are missing');
   if (user.name.length < 12) throw new ErrorGenerator(404, 'Dados de cadastro inválidos');
   const findUser = await findUserByEmail(user);
-  console.log(findUser);
+  // console.log(findUser);
   if (findUser) throw new ErrorGenerator(409, 'Conflict');
 };
 
@@ -72,9 +72,11 @@ const getAllUsers = async (token) => {
   const deleteUser = async (token, id) => {
     const data = jwt.verify(token, secret);
     const { data: { role } } = data;
-    console.log('role no userService >>>>>>>', role);
+    // console.log('role no userService >>>>>>>', role);
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');
   const deletedUser = await User.destroy({ where: { id } });
+  console.log('deleteUser service')
+  console.log(deletedUser)
   return deletedUser;
 };
 

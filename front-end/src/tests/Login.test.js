@@ -82,7 +82,7 @@ describe('Testa a página de Login', () => {
     userEvent.click(loginButton);
 
     await waitFor(() => {
-      expect(history.pathname).toBe('/seller');
+      expect(history.pathname).toBe('/seller/orders');
     });
   });
   it('Testa os inputs como admin', async () => {

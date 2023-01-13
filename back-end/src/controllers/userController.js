@@ -21,7 +21,7 @@ const getSellers = async (_req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    console.log('token no userController >>>>>>>', req.authorization);
+    // console.log('token no userController >>>>>>>', req.authorization);
 
     const { authorization } = req.headers;
     const allUsers = await userService.getAllUsers(authorization);
@@ -35,7 +35,7 @@ const deleteUser = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
     const { id } = req.params;
-    console.log('token e id no deleteUser no userController >>>>>', id, '  >>>>  ', authorization);
+    // console.log('token e id no deleteUser no userController >>>>>', id, '  >>>>  ', authorization);
     await userService.deleteUser(authorization, id);
     return res.status(204).json({ message: 'User deleted' });
   } catch (error) {

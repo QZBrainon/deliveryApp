@@ -18,6 +18,7 @@ describe('Testa o Products', () => {
   const loginButtonTestId = 'common_login__button-login';
   const deliveryAddress = 'endereco da minha casa';
   const deliveryNumber = '100';
+  const fulanaPereira = 'Fulana Pereira';
   it('Testa os inputs como customer', async () => {
     const { history } = renderWithRouter(<App />);
 
@@ -49,9 +50,7 @@ describe('Testa o Products', () => {
     const removeButton = (await screen.findAllByRole('button', { name: '-' }))[0];
     const productQtyInput = await screen
       .findByTestId('customer_products__input-card-quantity-1');
-    const cart = await screen
-      .getByRole('button', { name: 'Ver carrinho: 0' });
-    // .findByTestId('customer_products__button-cart');
+    const cart = screen.getByRole('button', { name: 'Ver carrinho: 0' });
 
     expect(drinkName).toBeInTheDocument();
     expect(drinkPrice).toBeInTheDocument();
@@ -62,17 +61,11 @@ describe('Testa o Products', () => {
     expect(productQtyInput).toBeInTheDocument();
     expect(productQtyInput).toHaveValue(0);
     expect(cart).toBeInTheDocument();
-    // expect(cart).toHaveValue('Ver carrinho: R$ 0,00');
 
     userEvent.click(addButton);
     userEvent.click(addButtonTwo);
 
     expect(productQtyInput).toHaveValue(1);
-
-    // const cartValue = (await screen
-    //   .findAllByText('R$ 2,20'))[0];
-    // expect(cartValue).toBeInTheDocument();
-    // console.log(cartValue);
 
     userEvent.click(removeButton);
 
@@ -84,21 +77,17 @@ describe('Testa o Products', () => {
 
     userEvent.click(cart);
 
-    // console.log(history.pathname);
-
     const item = screen.getAllByText('1');
     const productName = screen.getByText(/Skol Lata 250ml/i);
 
     expect(item[0]).toBeInTheDocument();
     expect(productName).toBeInTheDocument();
 
-    // const sellerOption = await screen.findByText(/fulana pereira/i);
     const sellerOptions = await screen.findAllByRole('option');
-    // const selectSeller = await screen.findByTestId('customer_checkout__select-seller');
+
     userEvent.click(sellerOptions[0]);
 
-    // console.log(sellerOptions[0]);
-    expect(sellerOptions[0]).toHaveAttribute('value', 'Fulana Pereira');
+    expect(sellerOptions[0]).toHaveAttribute('value', fulanaPereira);
 
     const addressInput = screen.getByTestId('customer_checkout__input-address');
     const numberInput = screen.getByTestId('customer_checkout__input-address-number');
@@ -171,12 +160,11 @@ describe('Testa o Products', () => {
     });
 
     const orderDetailsButton = screen.getAllByRole('button');
-    userEvent.click(orderDetailsButton[orderDetailsButton.length - 1]);
 
     jest.spyOn(httpRequest, 'get').mockResolvedValueOnce({ data: { id: 1,
       userId: 3,
       sellerId: 2,
-      seller: { name: 'Fulana Pereira' },
+      seller: { name: fulanaPereira },
       totalPrice: '4.40',
       deliveryAddress,
       deliveryNumber,
@@ -193,6 +181,8 @@ describe('Testa o Products', () => {
         }],
     } });
 
+    userEvent.click(orderDetailsButton[orderDetailsButton.length - 1]);
+
     await waitFor(() => {
       // console.log(history.pathname);
       expect(history.pathname).toBe('/customer/orders/1');
@@ -201,7 +191,7 @@ describe('Testa o Products', () => {
     const finishCurrentOrderButton = await screen
       .findByRole('button', { name: /marcar como entregue/i });
 
-    jest.spyOn(httpRequest, 'patch').mockResolvedValueOnce('Qualquer coisa');
+    jest.spyOn(httpRequest, 'patch').mockRejectedValueOnce('Qualquer coisa');
 
     expect(finishCurrentOrderButton).not.toBeDisabled();
 

@@ -80,7 +80,7 @@ describe('Testa a page Manage', () => {
       // token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxMCwibmFtZSI6ImRnYWRnZGFhZ2dnZGFnZCIsImVtYWlsIjoiZ2RoZGdhQGRlbGl2ZXJ5YXBwLmNvbSIsInJvbGUiOiJjdXN0b21lciJ9LCJpYXQiOjE2NzM5NzcxMDAsImV4cCI6MTY4MjUzMDcwMH0.If9oim5tRw2mF0ULhX-CmGpS1zzmJq53mDGvdfDmh7I',
     });
 
-    // userEvent.click(submitButton);
+    userEvent.click(submitButton);
 
     // const renderedUserNumber = await screen.findByText('4');
     // const renderedName = await screen.findByText(randomName);

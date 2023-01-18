@@ -75,8 +75,6 @@ const getAllUsers = async (token) => {
     // console.log('role no userService >>>>>>>', role);
   if (role !== 'administrator') throw new ErrorGenerator(401, 'Unauthorized');
   const deletedUser = await User.destroy({ where: { id } });
-  console.log('deleteUser service')
-  console.log(deletedUser)
   return deletedUser;
 };
 

@@ -49,7 +49,7 @@ export default function Checkout() {
   useEffect(() => {
     fetchSellersInfo();
     setCartItems(JSON.parse(localStorage.getItem('cartItems')));
-    console.log(JSON.parse(localStorage.getItem('user')).token);
+    // console.log(JSON.parse(localStorage.getItem('user')).token);
   }, []);
 
   const renderCartItems = cartItems.map((item, index) => (

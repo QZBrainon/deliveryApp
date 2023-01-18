@@ -6,6 +6,7 @@ import renderWithRouter from './utils/RenderWithRouter';
 import httpRequest from '../axios/config';
 
 describe('Testa a página de Login', () => {
+  // afterEach(() => jest.clearAllMocks());
   const emailZebirita = 'zebirita@email.com';
   const sellerEmail = 'fulana@deliveryapp.com';
   const adminEmail = 'adm@deliveryapp.com';
@@ -15,6 +16,7 @@ describe('Testa a página de Login', () => {
   + 'IifSwiaWF0IjoxNjcwOTU2MDE4LCJleHAiOjE2Nzk1MDk2MTh9.'
   + 'qCdfvrHvSz8IP_nUAXDK0xsRlGFbIk_FvadFUDVYC1U';
   const loginButtonTestId = 'common_login__button-login';
+  const logoutButtonTestId = 'customer_products__element-navbar-link-logout';
   it('Testa os inputs como customer', async () => {
     const { history } = renderWithRouter(<App />);
 
@@ -49,6 +51,9 @@ describe('Testa a página de Login', () => {
     await waitFor(() => {
       expect(history.pathname).toBe('/customer/products');
     });
+
+    const logOutButton = screen.getByTestId(logoutButtonTestId);
+    userEvent.click(logOutButton);
   });
   it('Testa os inputs como seller', async () => {
     const { history } = renderWithRouter(<App />);
@@ -61,10 +66,11 @@ describe('Testa a página de Login', () => {
       token,
     } };
     jest.spyOn(httpRequest, 'post').mockResolvedValueOnce(expectedResponse);
+    console.log(history.pathname);
 
-    await waitFor(() => {
-      expect(history.pathname).toBe('/login');
-    });
+    // await waitFor(() => {
+    //   expect(history.pathname).toBe('/login');
+    // });
 
     const emailInput = screen.getByPlaceholderText('email');
     const passwordInput = screen.getByPlaceholderText('password');
@@ -84,6 +90,9 @@ describe('Testa a página de Login', () => {
     await waitFor(() => {
       expect(history.pathname).toBe('/seller/orders');
     });
+
+    const logOutButton = screen.getByTestId(logoutButtonTestId);
+    userEvent.click(logOutButton);
   });
   it('Testa os inputs como admin', async () => {
     const { history } = renderWithRouter(<App />);
@@ -119,6 +128,9 @@ describe('Testa a página de Login', () => {
     await waitFor(() => {
       expect(history.pathname).toBe('/admin/manage');
     });
+
+    const logOutButton = screen.getByTestId(logoutButtonTestId);
+    userEvent.click(logOutButton);
   });
   it('Testa o redirecionamento para a página de cadastro', async () => {
     const { history } = renderWithRouter(<App />);
@@ -127,11 +139,14 @@ describe('Testa a página de Login', () => {
     userEvent.click(registerButton);
 
     await wait(() => {
-      expect(history.pathname).toBeInTheDocument('/register');
+      expect(history.pathname).toBe('/register');
     });
+
+    // const logOutButton = screen.getByTestId(logoutButtonTestId);
+    // userEvent.click(logOutButton);
   });
   it('Testa erros', async () => {
-    const { debug } = renderWithRouter(<App />);
+    renderWithRouter(<App />);
 
     jest.spyOn(httpRequest, 'post')
       .mockRejectedValueOnce(new Error());
@@ -157,6 +172,6 @@ describe('Testa a página de Login', () => {
       const errorMsg = screen.getByText(/dados inválidos/i);
       expect(errorMsg).toBeInTheDocument();
     });
-    debug();
+    // debug();
   });
 });

@@ -28,7 +28,7 @@ export default function OrdersDetail() {
         Authorization: user?.token,
       },
     });
-    console.log(data);
+    // console.log(data);
     setOrderDetails(data);
   };
 

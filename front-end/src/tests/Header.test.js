@@ -84,36 +84,9 @@ describe('Testa o Header', () => {
       userEvent.click(productsButton);
       expect(history.pathname).toBe('/customer/products');
     });
-  });
-  it.skip('Testa se o redirecionamento para /customer/orders', async () => {
-    const { history } = renderWithRouter(<App />);
 
-    const expectedResponse = { data: {
-      id: 3,
-      name: zeBirita,
-      email: emailZebirita,
-      role: 'customer',
-      token,
-    } };
-    jest.spyOn(httpRequest, 'post').mockResolvedValueOnce(expectedResponse);
-
-    const emailInput = screen.getByPlaceholderText('email');
-    const passwordInput = screen.getByPlaceholderText('password');
-    const loginButton = screen.getByTestId(loginButtonTestId);
-
-    userEvent.type(emailInput, emailZebirita);
-    userEvent.type(passwordInput, zeBiritaPassword);
-
-    userEvent.click(loginButton);
-
-    jest.spyOn(httpRequest, 'get').mockResolvedValueOnce({ data: products });
-
-    const ordersButton = await screen.findByRole('button', { name: /meus pedidos/i });
-
-    expect(ordersButton).toBeInTheDocument();
-
-    userEvent.click(ordersButton);
-
-    expect(history.pathname).toBe('/customer/orders');
+    const logOutButton = screen
+      .getByTestId('customer_products__element-navbar-link-logout');
+    userEvent.click(logOutButton);
   });
 });

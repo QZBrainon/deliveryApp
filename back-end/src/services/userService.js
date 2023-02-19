@@ -23,7 +23,6 @@ const createUser = async (user) => {
         );
         const { id, name, email, role } = userCreated;
         const token = tokenGenerator(id, name, email, role);
-        console.log('>>>>>>>----', name, email, role, token);
     return { name, email, role, token };
 };
 

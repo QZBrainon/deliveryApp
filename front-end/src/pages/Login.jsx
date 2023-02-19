@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import httpRequest from '../axios/config';
 
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
 
   const verifyLogin = (loginEmail, loginPassword) => {
@@ -17,19 +18,34 @@ function Login() {
     return verifyEmail && verifyPassword;
   };
 
-  const handleSubmmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log('entrou');
-      const data = await httpRequest.post('/login', { email, password });
-      console.log(data);
+      const { data } = await httpRequest.post('/login', { email, password });
       localStorage.setItem('user', JSON.stringify(data));
-      navigate('/customer/products');
+      setRole(data.role);
     } catch (err) {
-      console.log(err.response.data.message);
-      if (err) setError('Dados inválidos');
+      setError('Dados inválidos');
     }
   };
+
+  useEffect(() => {
+    const credentials = JSON.parse(localStorage.getItem('user'))?.role;
+    if (credentials) setRole(credentials);
+  }, []);
+
+  useEffect(() => {
+    if (role === 'customer') {
+      navigate('/customer/products');
+    }
+    if (role === 'seller') {
+      navigate('/seller/orders');
+    }
+    if (role === 'administrator') {
+      navigate('/admin/manage');
+    }
+  }, [role]);
+
   useEffect(() => {
     setIsButtonDisabled(!verifyLogin(email, password));
   }, [email, password]);
@@ -38,37 +54,41 @@ function Login() {
     <div className="LoginPage">
       <img src="" alt="logo" className="AppLogo" />
       <h1>Delivery App</h1>
-      <form onSubmit={ handleSubmmit }>
+      <form onSubmit={ handleSubmit }>
         <input
           data-testid="common_login__input-email"
           value={ email }
+          placeholder="email"
           onChange={ (event) => setEmail(event.target.value) }
           type="text"
         />
         <input
           data-testid="common_login__input-password"
+          placeholder="password"
           value={ password }
           onChange={ (event) => setPassword(event.target.value) }
           type="password"
         />
         <button
           data-testid="common_login__button-login"
-          type="submit"
+          type="button"
           disabled={ isButtonDisabled }
+          onClick={ handleSubmit }
         >
           Login
         </button>
         <button
-          type="submit"
+          type="button"
           data-testid="common_login__button-register"
           onClick={ () => navigate('/register') }
         >
           Ainda não tenho conta
         </button>
       </form>
-      {error && <p data-testid="common_login__element-invalid-email">{error}</p>}
+      <p>zebirita@email.com  $#zebirita#$</p>
+      {
+        error && <p data-testid="common_login__element-invalid-email">{error}</p>
+      }
     </div>
   );
 }
-
-export default Login;

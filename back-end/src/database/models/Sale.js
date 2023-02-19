@@ -6,7 +6,7 @@ const saleModel = (sequelize, DataTypes) => {
       totalPrice: DataTypes.DECIMAL(9,2),
       deliveryAddress: DataTypes.STRING,
       deliveryNumber: DataTypes.STRING,
-      saleDate: {type: DataTypes.DATE, defaultValue: new Date()},
+      saleDate: {type: DataTypes.DATE, defaultValue: DataTypes.NOW},
       status: {type: DataTypes.STRING, defaultValue: 'Pendente'},
     },
     {
@@ -17,11 +17,9 @@ const saleModel = (sequelize, DataTypes) => {
     });
   
     Sale.associate = (models) => {
-      Sale.belongsTo(models.User,
-        [{ foreignKey: 'userId', as: 'user' },
-      { foreignKey: 'sellerId', as: 'seller' }]);
+      Sale.belongsTo(models.User,{ foreignKey: 'userId', as: 'user' });
+      Sale.belongsTo(models.User,{ foreignKey: 'sellerId', as: 'seller' });
     };
-  
     return Sale;
   };
   

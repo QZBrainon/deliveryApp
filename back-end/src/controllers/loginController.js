@@ -10,7 +10,7 @@ const login = async (req, res, next) => {
     const { id, name, email, role, password } = user;
     if (md5(req.body.password) !== password) throw new ErrorGenerator(409, 'Unauthorized');
     const token = tokenGenerator(id, name, email, role);
-     return res.status(200).json({ name, email, role, token });
+     return res.status(200).json({ id, name, email, role, token });
   } catch (error) {
       next(error);
   }

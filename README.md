@@ -24,7 +24,7 @@ Tested with testing tools such as Chai/ChaiHttp, Sinon and Mocha
 
 ## How to use
 
-You'll need NodeJS version 16+ installed to run this project. You can install it here [Install Node](https://nodejs.org/en)
+You'll need NodeJS version 16+ installed to run this project. You can install it [here](https://nodejs.org/en)
 
 Clone this repo into your machine with the command `git clone git@github.com:QZBrainon/deliveryApp.git`
 
@@ -32,7 +32,7 @@ Navigate to the newly created directory with `cd deliveryApp` and run `npm insta
 
 Then, if you don't want to configure environment variables, start a docker container using the docker-compose file
 
-If you dont have docker installed and you're a Linux user, follow this installation guide [Docker Guide](https://docs.docker.com/engine/install/ubuntu/)
+If you dont have docker installed and you're a Linux user, follow this installation [guide](https://docs.docker.com/engine/install/ubuntu/)
 
 Also, you'll need to install [Docker Compose](https://docs.docker.com.zh.xy2401.com/v17.12/compose/install/)
 

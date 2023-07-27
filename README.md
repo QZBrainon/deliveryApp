@@ -2,6 +2,7 @@
 
 A beer delivery app. This is a fullstack project and the final project for graduation at [Trybe](https://www.betrybe.com/)
 
+
 The app consists in a fully implemented system where there are 3 main users group:
 
 - Customer: Can register, login, shop for drinks, add to cart and checkout by giving the delivery address
